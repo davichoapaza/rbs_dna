@@ -1,0 +1,70 @@
+<mat-sidenav-container class="contenedor">
+  <mat-sidenav #sidenav mode="side" class="app-sidenav" opened>
+    <div class="titulo-contenedor">
+      <span class="titulo">RBS-DNA <BR /> SISTEMA BASADA EN GESTIONS DE RIESGOS</span>
+    </div>
+    <!-- Lista de menú -->
+
+    <mat-nav-list class="menu-lista">
+      @for (item of menuItems; track item.path) {
+        <a
+          mat-list-item
+          [routerLink]="item.path"
+          routerLinkActive="active-link"
+          style="color: white !important"
+        >
+          <mat-icon matListItemIcon style="color: white !important">{{ item.icon }}</mat-icon>
+          <span matListItemTitle style="color: white !important">{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+
+    <!--  INFORMACIÓN DEL ROL 
+    <div class="rol-info">
+      <div class="rol-badge" [style.background]="getRoleColor()">
+        <span>{{ getRoleLabel() }}</span>
+      </div>
+    </div>-->
+  </mat-sidenav>
+
+  <!-- Sección del Contenido Principal -->
+  <mat-sidenav-content class="app-content">
+    <!-- Barra superior con botón para ocultar/mostrar el menú -->
+    <mat-toolbar>
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <!-- Añadimos style="color: #1e2538 !important;" directamente aquí -->
+        <mat-icon style="color: #1e2538 !important">menu</mat-icon>
+      </button>
+      <span>Mi Aplicación</span>
+      <div class="espacio-toolbar"></div>
+      <div class="acciones-toolbar">
+        <!-- Al hacer clic aquí, se abrirá el menú con id #profileMenu -->
+        <div class="avatar-container" [matMenuTriggerFor]="profileMenu">
+          <div class="avatar-badge">
+            <mat-icon>person</mat-icon>
+          </div>
+          <span class="nombre-usuario">DAVID APAZA CANAZA</span>
+        </div>
+        <!-- DEFINICIÓN DEL MENÚ FLOTANTE-->
+        <mat-menu #profileMenu="matMenu" xPosition="before" class="custom-profile-menu">
+          <button mat-menu-item>
+            <mat-icon class="icon-account">person_outline</mat-icon>
+            <span>Mi cuenta</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon class="icon-help">switch_account</mat-icon>
+            <span>Cambiar de Rol</span>
+          </button>
+
+          <button mat-menu-item class="logout-item">
+            <mat-icon class="icon-logout" (click)="logout()">logout</mat-icon>
+            <span>Cerrar sesión</span>
+          </button>
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+    <div class="page-container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,140 @@
+.contenedor {
+  height: 100vh; 
+}
+
+.app-sidenav {
+  width: 300px; /* Ajusta el ancho del menu latera*/
+  background-color: #1e293b !important; 
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: none;
+}
+.app-sidenav {
+  width: 280px; /*Ancho para leer el título largo*/
+  background-color: #1e293b !important; 
+  border-right: 1px solid rgba(255, 255, 255, 0.08); 
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo-contenedor {
+  padding: 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(125, 126, 128, 0.972); /* Línea divisoria inferior */
+}
+.titulo {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  color:  #ffffff; /* Blanco suave */
+  text-transform: uppercase;
+  display: block;
+}
+
+/* 3. Ajustes de la lista de navegación */
+.menu-lista {
+  padding-top: 25px !important;
+}
+
+/* Estilo base para cada ítem/enlace del menú */
+.menu-lista a.menu-lista {
+  color: #94a3b8 !important; /* Gris azulado para los ítems inactivos */
+  margin: 4px 12px;          /* Espaciado para que parezcan botones flotantes */
+  border-radius: 8px;        /* Bordes redondeados modernos */
+  transition: all 0.2s ease-in-out;
+}
+
+/* Iconos de los ítems inactivos */
+.menu-lista a.menu-lista mat-icon {
+  color: #94a3b8 !important;
+}
+
+/* 4. Efecto Hover (Cuando el usuario pasa el ratón por encima) */
+.menu-lista a.menu-lista:hover {
+  background-color: #2C3247 !important;
+}
+
+.menu-lista a.menu-lista:hover mat-icon {
+  color: #f8fafc !important;
+}
+
+.avatar-container:hover {
+  background: rgba(13, 27, 74, 0.05);
+}
+
+
+
+
+
+
+/* Cambia el color del texto de los enlaces del menú a blanco */
+.app-sidenav [matListItemTitle] {
+  color: #ded7d7 !important;
+}
+
+.app-sidenav mat-nav-list mat-icon {
+  color: #ded7d7 !important;
+}
+/*espacio en el toolbar*/
+.espacio-toolbar {
+  flex: 1 1 auto;
+}
+
+/* Contenedor de los elementos derechos con alineación vertical */
+.acciones-toolbar {
+  display: flex;
+  align-items: center;
+  
+}
+
+/* Contenedor interactivo del avatar y el nombre */
+.avatar-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer; /* Hace que aparezca la mano al pasar el mouse */
+}
+.avatar-badge {
+  width: 40px;
+  height: 40px;
+  background-color: #4a4a4a; /* Color gris oscuro de fondo */
+  color: #ffffff;            /* Texto blanco */
+  border-radius: 50%;        /* Hace el contenedor perfectamente redondo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.nombre-usuario {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  color:  #c99a53; /* Blanco suave */
+  text-transform: uppercase;
+  display: block;
+}
+
+
+.icon-account {
+  color: #c99a53 !important;
+}
+
+/* Icono de Ayuda (Gris Oscuro) */
+.icon-help {
+  color: #555555 !important;
+}
+
+/* Opción e Icono de Cerrar Sesión (Rosado/Rojo) */
+.logout-item {
+  color: #e94a6f !important;
+}
+.icon-logout {
+  color: #e94a6f !important;
+}
+
+

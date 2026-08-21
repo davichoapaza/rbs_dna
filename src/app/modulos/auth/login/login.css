@@ -1,0 +1,102 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #aaaaab 0%, #aaaaab 50%, #aaaaab 100%);
+  padding: 20px;
+}
+
+.login-card {
+  max-width: 420px;
+  width: 100%;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.login-card .mat-card-header {
+  display: block !important;
+  text-align: center;
+  padding: 0 0 16px !important;
+}
+
+.login-card .mat-card-title {
+  margin-bottom: 8px !important;
+  font-size: 0 !important;
+}
+
+.login-card .mat-card-subtitle {
+  font-size: 14px !important;
+  color: #666 !important;
+}
+
+.logo-container {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.logo-text {
+  font-size: 32px;
+  font-weight: 700;
+  color: #172655;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffebee;
+  color: #c62828;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin: 8px 0 16px;
+  font-size: 14px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #172655 !important;
+  color: white !important;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: #2a3f7e !important;
+}
+
+.login-btn:disabled {
+  opacity: 0.6;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 0 8px;
+}
+
+.footer-links a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  color: #172655;
+  text-decoration: underline;
+}
+
+.footer-links .divider {
+  color: #ddd;
+}

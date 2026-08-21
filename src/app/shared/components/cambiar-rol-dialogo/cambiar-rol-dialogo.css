@@ -1,0 +1,20 @@
+.dialog-content {
+  padding-top: 10px;
+}
+
+.subtitle {
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 14px;
+}
+
+.roles-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.rol-option {
+  font-weight: 500;
+}
