@@ -55,15 +55,33 @@ export class Sidebar {
     this.auth.logout();
   }
 
-  abrirModalCambiarRol() {
+  /*abrirModalCambiarRol() {
     const usuarioActual = this.auth.usuarioActual();
     const rolesDisponibles: UserRole[] = ['administrador', 'director', 'jefe', 'inspector'];
-    const rolActual: UserRole = usuarioActual?.rol || 'inspector';
+    //const rolActual: UserRole = usuarioActual?.rol || 'director';
+    // Si usuarioActual.rol devuelve un arreglo (UserRole[]):
+const rol_actual: UserRole = usuarioActual?.rol?.[0] || 'director';
     const dialogRef = this.dialog.open(CambiarRolDialogo, {
       width: '350px',
       data: {
         rolesDisponibles,
         rolActual,
+      },
+    });
+  }*/
+  abrirModalCambiarRol() {
+    const usuario_actual = this.auth.usuarioActual();
+
+    const roles_disponibles: UserRole[] = ['administrador', 'director', 'jefe', 'inspector'];
+
+    // Selección del rol individual
+    const rol_actual: UserRole = usuario_actual?.rol?.[0] || 'director';
+
+    const dialogRef = this.dialog.open(CambiarRolDialogo, {
+      width: '350px',
+      data: {
+        rolesDisponibles: roles_disponibles, // Asigna la variable en snake_case
+        rolActual: rol_actual, // Asigna rol_actual a la propiedad rolActual
       },
     });
   }

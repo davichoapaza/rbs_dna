@@ -7,7 +7,7 @@ export interface Usuario {
   id: number;
   nombre: string;
   email: string;
-  rol: UserRole;
+  rol?: UserRole[];
 }
 
 @Injectable({
@@ -21,13 +21,6 @@ export class Auth {
   autenticado = signal<boolean>(false);
   usuarioActual = signal<Usuario | null>(null);
 
-  // Estado reactivo del usuario
-  /*usuarioActual = signal<{ rol: UserRole; roles: UserRole[]; nombre: string } | null>({
-    rol: 'inspector',
-    roles: ['administrador', 'director', 'jefe', 'inspector'],
-    nombre: 'DAVID APAZA CANAZA'
-  });*/
-
   constructor(
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -36,7 +29,9 @@ export class Auth {
 
     if (this.browser) {
       this.autenticado.set(this.tieneToken());
+      console.log('login auth **:', this.autenticado);
       this.usuarioActual.set(this.obtenerUsuario());
+      console.log('usuario actual login:', this.usuarioActual);
     }
   }
   private tieneToken(): boolean {
@@ -65,25 +60,25 @@ export class Auth {
         id: 1,
         nombre: 'David Apaza Canaza',
         email: 'david@rbsdna.com',
-        rol: 'director',
+        rol: ['director'],
       },
       {
         id: 2,
         nombre: 'Maria Gomez',
         email: 'maria@rbsdna.com',
-        rol: 'director',
+        rol: ['director'],
       },
       {
         id: 3,
         nombre: 'Juan Perez',
         email: 'juan@rbsdna.com',
-        rol: 'jefe',
+        rol: ['jefe'],
       },
       {
         id: 4,
         nombre: 'Ana Torres',
         email: 'ana@rbsdna.com',
-        rol: 'inspector',
+        rol: ['inspector'],
       },
     ];
 
@@ -113,15 +108,5 @@ export class Auth {
     this.autenticado.set(false);
     this.usuarioActual.set(null);
     this.router.navigate(['/login']);
-  }
-
-  actualizarRolActivo(nuevo_rol: UserRole): void {
-    const usuario = this.usuarioActual();
-    if (usuario) {
-      this.usuarioActual.set({
-        ...usuario,
-        rol: nuevo_rol,
-      });
-    }
   }
 }
