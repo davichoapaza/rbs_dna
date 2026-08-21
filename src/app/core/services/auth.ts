@@ -108,8 +108,6 @@ export class Auth {
   }
 
   logout(): void {
-    //if (!this.isBrowser) return;
-
     localStorage.removeItem(this.token);
     localStorage.removeItem(this.usuario);
     this.autenticado.set(false);

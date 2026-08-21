@@ -22,7 +22,7 @@ export class Menu {
       path: '/inicio',
       icon: 'home',
       label: 'Inicio',
-      roles: ['administrador', 'jefe', 'inspector'],
+      roles: ['administrador', 'director', 'jefe', 'inspector'],
     },
     {
       path: '/usuarios',
@@ -66,10 +66,17 @@ export class Menu {
   menuFiltradoPorRol1(usuarioRol?: UserRole): MenuItem[] {
     console.log('Rol recibido para filtrar el menú:', usuarioRol);
 
-    if (!usuarioRol) {
+    /*    if (!usuarioRol) {
       return [];
-    }
+    }*/
 
-    return this.allMenuItems.filter((item) => item.roles?.includes(usuarioRol));
+    return this.allMenuItems.filter((item) => item.roles?.includes(usuarioRol!));
   }
+  /*{
+      path: '/inicio',
+      icon: 'home',
+      label: 'Inicio',
+      roles: ['administrador', 'jefe', 'inspector'],
+    },
+*/
 }

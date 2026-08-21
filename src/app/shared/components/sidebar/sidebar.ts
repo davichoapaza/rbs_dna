@@ -10,7 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Auth, UserRole } from '../../../core/services/auth';
 import { Menu } from '../../../core/services/menu';
-
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CambiarRolDialogo } from '../cambiar-rol-dialogo/cambiar-rol-dialogo';
 export interface MenuItem {
   path: string;
   icon: string;
@@ -37,18 +38,33 @@ export class Sidebar {
   paginaActual: string = 'Inicio';
   usuario: any = null;
   usuarioRol: UserRole | null = null;
+  private dialog = inject(MatDialog);
   private auth = inject(Auth);
   private router = inject(Router);
   private menu = inject(Menu);
   menuItems: MenuItem[] = [];
-  // menuFiltrado: MenuItem[] = [];
+
   constructor() {
     this.menuItems = this.menu.menuItems;
+
     console.log('Usuario actual:', this.usuario);
     console.log('averias filtradas por rol:', this.menuItems);
   }
 
   logout() {
     this.auth.logout();
+  }
+
+  abrirModalCambiarRol() {
+    const usuarioActual = this.auth.usuarioActual();
+    const rolesDisponibles: UserRole[] = ['administrador', 'director', 'jefe', 'inspector'];
+    const rolActual: UserRole = usuarioActual?.rol || 'inspector';
+    const dialogRef = this.dialog.open(CambiarRolDialogo, {
+      width: '350px',
+      data: {
+        rolesDisponibles,
+        rolActual,
+      },
+    });
   }
 }
