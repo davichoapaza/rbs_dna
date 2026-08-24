@@ -60,7 +60,7 @@ export class Auth {
         id: 1,
         nombre: 'David Apaza Canaza',
         email: 'david@rbsdna.com',
-        rol: ['director'],
+        rol: ['director', 'inspector', 'jefe'],
       },
       {
         id: 2,

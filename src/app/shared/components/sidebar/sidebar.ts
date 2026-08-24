@@ -55,34 +55,34 @@ export class Sidebar {
     this.auth.logout();
   }
 
-  /*abrirModalCambiarRol() {
-    const usuarioActual = this.auth.usuarioActual();
-    const rolesDisponibles: UserRole[] = ['administrador', 'director', 'jefe', 'inspector'];
-    //const rolActual: UserRole = usuarioActual?.rol || 'director';
-    // Si usuarioActual.rol devuelve un arreglo (UserRole[]):
-const rol_actual: UserRole = usuarioActual?.rol?.[0] || 'director';
-    const dialogRef = this.dialog.open(CambiarRolDialogo, {
-      width: '350px',
-      data: {
-        rolesDisponibles,
-        rolActual,
-      },
-    });
-  }*/
   abrirModalCambiarRol() {
     const usuario_actual = this.auth.usuarioActual();
+    //roles_disponibles: UserRole[] = this.auth.usuarioActual()?.rol;
 
-    const roles_disponibles: UserRole[] = ['administrador', 'director', 'jefe', 'inspector'];
-
-    // Selección del rol individual
-    const rol_actual: UserRole = usuario_actual?.rol?.[0] || 'director';
+    // Selección del rol individual activo
+    const rol_actual: UserRole = this.usuarioRol || usuario_actual?.rol?.[0] || 'director';
 
     const dialogRef = this.dialog.open(CambiarRolDialogo, {
       width: '350px',
       data: {
-        rolesDisponibles: roles_disponibles, // Asigna la variable en snake_case
-        rolActual: rol_actual, // Asigna rol_actual a la propiedad rolActual
+        rolesDisponibles: this.auth.usuarioActual()?.rol, // Pasa el arreglo con las opciones seleccionables
+        rolActual: rol_actual,
       },
+    });
+
+    // Se ejecuta cuando el modal se cierra al presionar "Aplicar Cambio"
+    dialogRef.afterClosed().subscribe((nuevo_rol: UserRole | undefined) => {
+      if (nuevo_rol) {
+        // 1. Actualizar la variable del estado local
+        this.usuarioRol = nuevo_rol;
+
+        // 2. Obtener el nuevo filtro y forzar una nueva referencia del arreglo
+        const menu_actualizado = this.menu.menuFiltradoPorRol1(nuevo_rol);
+
+        // 3. Sincronizar tanto el servicio como el componente
+        this.menu.menuItems = menu_actualizado;
+        this.menuItems = [...menu_actualizado];
+      }
     });
   }
 }
