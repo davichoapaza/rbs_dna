@@ -73,4 +73,8 @@ export class Menu {
 
     return this.allMenuItems.filter((item) => item.roles?.includes(usuario_rol));
   }
+
+  actualizarMenuPorRol(nuevo_rol: UserRole): void {
+    this.menuItems = this.menuFiltradoPorRol1(nuevo_rol);
+  }
 }

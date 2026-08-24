@@ -60,19 +60,19 @@ export class Auth {
         id: 1,
         nombre: 'David Apaza Canaza',
         email: 'david@rbsdna.com',
-        rol: ['director', 'inspector', 'jefe'],
+        rol: ['administrador', 'director', 'inspector', 'jefe'],
       },
       {
         id: 2,
         nombre: 'Maria Gomez',
         email: 'maria@rbsdna.com',
-        rol: ['director'],
+        rol: ['jefe'],
       },
       {
         id: 3,
         nombre: 'Juan Perez',
         email: 'juan@rbsdna.com',
-        rol: ['jefe'],
+        rol: ['inspector'],
       },
       {
         id: 4,
@@ -103,6 +103,10 @@ export class Auth {
   }
 
   logout(): void {
+    console.log('**************************************');
+    console.log('DAVID APAZA CANAZA');
+    console.log('**********CIERRE DE SESSION***********');
+
     localStorage.removeItem(this.token);
     localStorage.removeItem(this.usuario);
     this.autenticado.set(false);

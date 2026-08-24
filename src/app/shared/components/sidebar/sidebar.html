@@ -19,7 +19,7 @@
       }
     </mat-nav-list>
 
-    <!--  INFORMACIÓN DEL ROL 
+    <!-- INFORMACIÓN DEL ROL 
     <div class="rol-info">
       <div class="rol-badge" [style.background]="getRoleColor()">
         <span>{{ getRoleLabel() }}</span>
@@ -35,7 +35,7 @@
         <!-- Añadimos style="color: #1e2538 !important;" directamente aquí -->
         <mat-icon style="color: #1e2538 !important">menu</mat-icon>
       </button>
-      <span>Mi Aplicación</span>
+      <span>RBS-DNA</span>
       <div class="espacio-toolbar"></div>
       <div class="acciones-toolbar">
         <!-- Al hacer clic aquí, se abrirá el menú con id #profileMenu -->
@@ -56,8 +56,8 @@
             <span>Cambiar de Rol</span>
           </button>
 
-          <button mat-menu-item class="logout-item">
-            <mat-icon class="icon-logout" (click)="logout()">logout</mat-icon>
+          <button mat-menu-item class="logout-item" (click)="logout()">
+            <mat-icon class="icon-logout">logout</mat-icon>
             <span>Cerrar sesión</span>
           </button>
         </mat-menu>

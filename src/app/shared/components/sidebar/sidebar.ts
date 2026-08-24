@@ -1,26 +1,19 @@
-import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Router, RouterModule, NavigationEnd, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Component, inject, NgZone, ChangeDetectorRef } from '@angular/core'; // 1. Importa ChangeDetectorRef
+import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
 import { Auth, UserRole } from '../../../core/services/auth';
-import { Menu } from '../../../core/services/menu';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Menu, MenuItem } from '../../../core/services/menu';
 import { CambiarRolDialogo } from '../cambiar-rol-dialogo/cambiar-rol-dialogo';
-export interface MenuItem {
-  path: string;
-  icon: string;
-  label: string;
-  roles?: UserRole[]; // Roles que pueden ver este item
-}
 
 @Component({
   selector: 'app-sidebar',
+  standalone: true,
   imports: [
     RouterOutlet,
     RouterModule,
@@ -38,17 +31,16 @@ export class Sidebar {
   paginaActual: string = 'Inicio';
   usuario: any = null;
   usuarioRol: UserRole | null = null;
+
   private dialog = inject(MatDialog);
   private auth = inject(Auth);
   private router = inject(Router);
   private menu = inject(Menu);
-  menuItems: MenuItem[] = [];
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
 
-  constructor() {
-    this.menuItems = this.menu.menuItems;
-
-    console.log('Usuario actual:', this.usuario);
-    console.log('averias filtradas por rol:', this.menuItems);
+  get menuItems(): MenuItem[] {
+    return this.menu.menuItems;
   }
 
   logout() {
@@ -57,31 +49,25 @@ export class Sidebar {
 
   abrirModalCambiarRol() {
     const usuario_actual = this.auth.usuarioActual();
-    //roles_disponibles: UserRole[] = this.auth.usuarioActual()?.rol;
-
-    // Selección del rol individual activo
     const rol_actual: UserRole = this.usuarioRol || usuario_actual?.rol?.[0] || 'director';
 
     const dialogRef = this.dialog.open(CambiarRolDialogo, {
       width: '350px',
       data: {
-        rolesDisponibles: this.auth.usuarioActual()?.rol, // Pasa el arreglo con las opciones seleccionables
+        rolesDisponibles: this.auth.usuarioActual()?.rol,
         rolActual: rol_actual,
       },
     });
 
-    // Se ejecuta cuando el modal se cierra al presionar "Aplicar Cambio"
     dialogRef.afterClosed().subscribe((nuevo_rol: UserRole | undefined) => {
       if (nuevo_rol) {
-        // 1. Actualizar la variable del estado local
-        this.usuarioRol = nuevo_rol;
-
-        // 2. Obtener el nuevo filtro y forzar una nueva referencia del arreglo
-        const menu_actualizado = this.menu.menuFiltradoPorRol1(nuevo_rol);
-
-        // 3. Sincronizar tanto el servicio como el componente
-        this.menu.menuItems = menu_actualizado;
-        this.menuItems = [...menu_actualizado];
+        this.ngZone.run(() => {
+          this.usuarioRol = nuevo_rol;
+          this.menu.actualizarMenuPorRol(nuevo_rol);
+          // Forzar el refresco del DOM
+          this.cdr.detectChanges();
+          this.router.navigate(['/inicio']);
+        });
       }
     });
   }
