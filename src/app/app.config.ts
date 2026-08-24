@@ -22,3 +22,11 @@ export const appConfig: ApplicationConfig = {
     },
   ],
 };
+
+/* para usar interceptor
+(Nota: No olvides registrar este interceptor en tu 
+  archivo de configuración global, típicamente app.config.ts, usando 
+  provideHttpClient(withInterceptors([authInterceptor]))
+   para que Angular empiece a utilizarlo).
+En Angular standalone (versiones 15+), los interceptores creados con HttpInterceptorFn no se activan automáticamente por el simple hecho de existir en tu estructura de archivos. Necesitas "conectarlos" explícitamente en el pipeline de peticiones HTTP de la aplicación.
+*/

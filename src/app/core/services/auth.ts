@@ -45,6 +45,11 @@ export class Auth {
     return usuario ? JSON.parse(usuario) : null;
   }
 
+  obtenerToken(): string | null {
+    if (!this.browser) return null;
+    return localStorage.getItem(this.token);
+  }
+
   loggin(): boolean {
     if (!this.browser) return false;
     return this.tieneToken();
@@ -104,7 +109,7 @@ export class Auth {
 
   logout(): void {
     console.log('**************************************');
-    console.log('DAVID APAZA CANAZA');
+    console.log('DAVID APAZA');
     console.log('**********CIERRE DE SESSION***********');
 
     localStorage.removeItem(this.token);
