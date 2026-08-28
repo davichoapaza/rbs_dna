@@ -1,0 +1,87 @@
+<div class="contenedor-modal">
+  <div class="encabezado-modal">
+    <div class="caja-titulo">
+      <h2 mat-dialog-title class="titulo-modal">
+        Asignar Indicadores de Lugar - CITE: {{ datos?.cite || 'DGAC-DNA-001/2026' }}
+      </h2>
+      <span class="etiqueta-estado">{{ datos?.estado || 'CONFIGURABLE' }}</span>
+    </div>
+    <button mat-icon-button (click)="cerrarModal()" class="boton-cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Cuerpo del Modal / Formulario -->
+  <mat-dialog-content class="contenido-modal">
+    <form [formGroup]="formularioAsignacion">
+      <div class="contenedor-tabla-modal">
+        <!-- Cabecera de Tabla -->
+        <div class="cabecera-tabla">
+          <div class="columna-cabecera col-inspector">INSPECTOR ASIGNADO</div>
+          <div class="columna-cabecera col-indicador">INDICADOR DEL LUGAR</div>
+        </div>
+
+        <!-- Filas de la Tabla mediante FormArray -->
+        <div class="cuerpo-tabla" formArrayName="inspectores">
+          @for (grupo of arregloInspectores.controls; track $index) {
+            <div [formGroupName]="$index" class="fila-tabla">
+              <!-- Columna Datos Inspector -->
+              <div class="columna-celda col-inspector">
+                <span class="texto-cargo">{{ grupo.get('cargo')?.value }}</span>
+                <span class="texto-nombre">- {{ grupo.get('nombreCompleto')?.value }}</span>
+              </div>
+
+              <!-- Columna Select Desplegable Multiselect -->
+              <div class="columna-celda col-indicador">
+                <mat-form-field appearance="outline" class="desplegable-indicadores">
+                  <mat-select
+                    formControlName="indicadoresSeleccionados"
+                    placeholder="Seleccionar Indicadores..."
+                    multiple
+                  >
+                    <!-- Opción Seleccionar Todos -->
+                    <mat-option class="opcion-seleccionar-todos">
+                      <mat-checkbox
+                        [checked]="esTodosSeleccionados($index)"
+                        (change)="seleccionarTodos($index, $event)"
+                        (click)="$event.stopPropagation()"
+                      >
+                        <strong class="texto-todos">[ Seleccionar Todos ]</strong>
+                      </mat-checkbox>
+                    </mat-option>
+
+                    <!-- Lista de Indicadores -->
+                    @for (item of listaIndicadores; track item.codigo) {
+                      <mat-option [value]="item.codigo">
+                        {{ item.nombre }}
+                      </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <!-- Pie de Página y Acciones del Modal -->
+  <mat-dialog-actions class="pie-modal">
+    <span class="nota-ayuda"> * Haga clic en 'Indicador del Lugar' para desplegar la lista. </span>
+
+    <div class="grupo-botones-pie">
+      <button type="button" mat-flat-button class="boton-salir" (click)="cerrarModal()">
+        Salir
+      </button>
+
+      <button type="button" mat-flat-button class="boton-guardar" (click)="guardarConfiguracion()">
+        Guardar Configuración
+      </button>
+
+      <button type="button" mat-flat-button class="boton-notificar" (click)="notificarEIniciar()">
+        🚀 Notificar e Iniciar Inspección
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

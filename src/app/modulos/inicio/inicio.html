@@ -1,1 +1,15 @@
-<p>inicio works!</p>
+<div class="contenedor">
+  <mat-card class="bienvenido">
+    <mat-card-content class="contenido-tarjeta">
+      <!-- Encabezado de Texto -->
+      <div class="texto-bienvenida">
+        <h2>Sistema de Vigilancia Basada en Riesgos (RBS)</h2>
+        <p>Bienvenido, {{ usuarioActual()?.nombre }}</p>
+      </div>
+
+      <div class="imagen-contenedor">
+        <img src="assets/images/logo_dgac2.png" alt="Logo RBS" class="imagen-centro" />
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

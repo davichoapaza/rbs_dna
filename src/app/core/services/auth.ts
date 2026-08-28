@@ -34,7 +34,6 @@ export class Auth {
     }
   }
 
-  // Cambia localStorage por sessionStorage en los métodos de lectura y escritura
   obtenerToken(): string | null {
     if (!this.browser) return null;
     return sessionStorage.getItem(this.token);
@@ -59,7 +58,7 @@ export class Auth {
         id: 1,
         nombre: 'David Apaza Canaza',
         email: 'david@rbsdna.com',
-        rol: ['administrador', 'director', 'inspector', 'jefe'],
+        rol: ['administrador', 'director', 'jefe', 'inspector'],
       },
       { id: 2, nombre: 'Maria Gomez', email: 'maria@rbsdna.com', rol: ['jefe'] },
       { id: 3, nombre: 'Juan Perez', email: 'juan@rbsdna.com', rol: ['inspector'] },
@@ -73,7 +72,6 @@ export class Auth {
     if (usuarioEncontrado && password === '123456') {
       const mockToken = 'mock-jwt-token-' + Date.now();
 
-      // GUARDAR EN sessionStorage EN LUGAR DE localStorage
       sessionStorage.setItem(this.token, mockToken);
       sessionStorage.setItem(this.usuario, JSON.stringify(usuarioEncontrado));
 

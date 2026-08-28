@@ -40,6 +40,58 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'd-direccion-inicio',
+    loadComponent: () =>
+      import('./modulos/d-direccion-inicio/d-direccion-inicio').then((m) => m.DDireccionInicio),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'd-bandeja-revision',
+    loadComponent: () =>
+      import('./modulos/d-bandeja-revision/d-bandeja-revision').then((m) => m.DBandejaRevision),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'j-designar-inspector',
+    loadComponent: () =>
+      import('./modulos/j-designar-inspector/j-designar-inspector').then(
+        (m) => m.JDesignarInspector,
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'j-bandeja-revision',
+    loadComponent: () =>
+      import('./modulos/j-bandeja-revision/j-bandeja-revision').then((m) => m.JBandejaRevision),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'j-ejecucion',
+    loadComponent: () => import('./modulos/j-ejecucion/j-ejecucion').then((m) => m.JEjecucion),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'i-asignaciones',
+    loadComponent: () =>
+      import('./modulos/i-asignaciones/i-asignaciones').then((m) => m.IAsignaciones),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'i-evaluacion',
+    loadComponent: () => import('./modulos/i-evaluacion/i-evaluacion').then((m) => m.IEvaluacion),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'i-ejeucion',
+    loadComponent: () => import('./modulos/i-ejeucion/i-ejeucion').then((m) => m.IEjeucion),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'i-ejeucion',
+    loadComponent: () => import('./modulos/i-ejeucion/i-ejeucion').then((m) => m.IEjeucion),
+    canActivate: [authGuard],
+  },
+  {
     path: '**',
     redirectTo: '/inicio',
   },

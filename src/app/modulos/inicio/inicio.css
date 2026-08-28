@@ -1,0 +1,49 @@
+.contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  min-height: 50vh;
+}
+.bienvenido {
+  width: 100%;
+  max-width: 80%;
+
+  border-radius: 12px;
+  box-shadow: 10 20px 30px rgba(248, 248, 248, 0.15);
+}
+.contenido-tarjeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 24px !important;
+  gap: 20px;
+}
+.texto-bienvenida h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color:  #c99a53;
+}
+.texto-bienvenida p {
+  font-size: 1rem;
+  color: #94a3b8;
+  margin: 0;
+}
+.imagen-contenedor {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.imagen-centro {
+  max-width: 180px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.imagen-centro:hover {
+  transform: scale(1.03);
+}

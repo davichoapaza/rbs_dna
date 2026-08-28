@@ -46,7 +46,19 @@ export class Sidebar {
   logout() {
     this.auth.logout();
   }
+  constructor() {
+    this.usuarioRol = this.auth.usuarioActual()?.rol?.[0] || 'director';
+  }
 
+  obtenerColor(): string {
+    const colors: Record<UserRole, string> = {
+      administrador: '#eb8e8e',
+      director: '#4ecdc4',
+      jefe: '#ffd93d',
+      inspector: '#90eaa5',
+    };
+    return this.usuarioRol ? colors[this.usuarioRol] : '#ecedee';
+  }
   abrirModalCambiarRol() {
     const usuario_actual = this.auth.usuarioActual();
     const rol_actual: UserRole = this.usuarioRol || usuario_actual?.rol?.[0] || 'director';

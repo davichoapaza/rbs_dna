@@ -1,10 +1,18 @@
 <mat-sidenav-container class="contenedor">
   <mat-sidenav #sidenav mode="side" class="app-sidenav" opened>
     <div class="titulo-contenedor">
-      <span class="titulo">RBS-DNA <BR /> SISTEMA BASADA EN GESTIONS DE RIESGOS</span>
+      <span class="titulo">RBS-DNA <BR /> SISTEMA DE VIGILANCIA BASADA EN RIESGOS</span>
+    </div>
+
+    <!-- INFORMACIÓN DEL ROL  -->
+    <div class="rol-info">
+      <div class="rol-badge" [style.background]="obtenerColor()">
+        <span
+          ><b>ROL : {{ usuarioRol }}</b></span
+        >
+      </div>
     </div>
     <!-- Lista de menú -->
-
     <mat-nav-list class="menu-lista">
       @for (item of menuItems; track item.path) {
         <a
@@ -18,13 +26,6 @@
         </a>
       }
     </mat-nav-list>
-
-    <!-- INFORMACIÓN DEL ROL 
-    <div class="rol-info">
-      <div class="rol-badge" [style.background]="getRoleColor()">
-        <span>{{ getRoleLabel() }}</span>
-      </div>
-    </div>-->
   </mat-sidenav>
 
   <!-- Sección del Contenido Principal -->

@@ -1,0 +1,121 @@
+<div class="contenedor-principal">
+  <header class="seccion-encabezado">
+    <div class="fila-titulo">
+      <mat-icon class="icono-encabezado">account_balance</mat-icon>
+      <h1>Dirección de Navegación Aérea (DNA)</h1>
+    </div>
+  </header>
+
+  <mat-card class="tarjeta-formulario">
+    <form [formGroup]="formularioRegistro" (ngSubmit)="adicionarATabla()" class="fila-formulario">
+      <div class="grupo-campo">
+        <label class="etiqueta-campo">N° de Memorandum / CITE Oficial</label>
+        <mat-form-field appearance="outline" class="campo-personalizado">
+          <input matInput formControlName="cite" placeholder="Ej: DGAC-DNA-045/2026" />
+          @if (
+            formularioRegistro.get('cite')?.hasError('required') &&
+            formularioRegistro.get('cite')?.touched
+          ) {
+            <mat-error>El CITE es obligatorio</mat-error>
+          }
+        </mat-form-field>
+
+        <label class="etiqueta-campo">Adjuntar Archivo PDF</label>
+        <div class="envoltorio-archivo">
+          <input
+            type="file"
+            #selectorArchivo
+            (change)="alSeleccionarArchivo($event)"
+            accept=".pdf"
+            hidden
+          />
+          <button
+            type="button"
+            mat-flat-button
+            class="boton-archivo"
+            (click)="selectorArchivo.click()"
+          >
+            <mat-icon>attach_file</mat-icon>
+            Seleccionar PDF
+          </button>
+          <span class="nombre-archivo">{{ nombreArchivoSeleccionado }}</span>
+        </div>
+      </div>
+
+      <div class="acciones-formulario">
+        <button
+          type="submit"
+          mat-flat-button
+          class="boton-adicionar"
+          [disabled]="formularioRegistro.invalid"
+        >
+          + Adicionar
+        </button>
+      </div>
+    </form>
+  </mat-card>
+
+  <div class="contenedor-tabla">
+    <table mat-table [dataSource]="fuenteDatos" class="tabla-personalizada">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>N°</th>
+        <td mat-cell *matCellDef="let elemento">{{ elemento.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cite">
+        <th mat-header-cell *matHeaderCellDef>CITE</th>
+        <td mat-cell *matCellDef="let elemento" class="celda-cite">{{ elemento.cite }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="archivo">
+        <th mat-header-cell *matHeaderCellDef>Archivo</th>
+        <td mat-cell *matCellDef="let elemento">
+          <mat-icon class="icono-pdf">description</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let elemento">
+          <span class="etiqueta-estado">{{ elemento.estado }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actorActual">
+        <th mat-header-cell *matHeaderCellDef>Actor Actual</th>
+        <td mat-cell *matCellDef="let elemento">
+          <div class="caja-actor">
+            <span class="insignia-actor">
+              <mat-icon class="icono-actor">account_balance</mat-icon>
+              {{ elemento.actorActual }}
+            </span>
+            <small class="subtexto-actor">{{ elemento.subtextoActor }}</small>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let elemento">{{ elemento.fecha }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let elemento">
+          <div class="botones-accion">
+            <button class="boton-accion boton-instruir" (click)="instruir(elemento)">
+              <mat-icon class="icono-pequeno">takeout_dining</mat-icon>
+              Instruir
+            </button>
+            <button class="boton-accion boton-eliminar" (click)="eliminar(elemento.id)">
+              <mat-icon class="icono-pequeno">delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnasDesplegadas"></tr>
+      <tr mat-row *matRowDef="let fila; columns: columnasDesplegadas"></tr>
+    </table>
+  </div>
+</div>

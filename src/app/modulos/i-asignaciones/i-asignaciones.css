@@ -1,0 +1,128 @@
+.contenedor-principal {
+  padding: 32px 40px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  box-sizing: border-box;
+}
+
+/* Encabezado */
+.seccion-encabezado {
+  margin-bottom: 24px;
+}
+
+.titulo-vista {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+}
+
+.subtitulo-vista {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Contenedor de la Tabla */
+.contenedor-tabla {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tabla-personalizada {
+  width: 100%;
+}
+
+/* Cabecera Oscura de la Tabla */
+.tabla-personalizada th {
+  background-color: #0d1527;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 14px 20px;
+  border-bottom: none;
+}
+
+/* Celdas de la Tabla */
+.tabla-personalizada td {
+  padding: 14px 20px;
+  color: #334155;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.celda-destacada {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.celda-cite {
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+/* Insignia / Chip de Estado */
+.insignia-estado {
+  display: inline-block;
+  border: 1px solid #60a5fa;
+  color: #2563eb;
+  background-color: #eff6ff;
+  padding: 4px 14px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Botones de Acción */
+.grupo-botones-accion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.boton-accion {
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.boton-accion:active {
+  transform: scale(0.98);
+}
+
+/* Botón Gris Oscuro: Designar Insp. */
+.boton-designar {
+  background-color: #475569;
+  color: #ffffff;
+}
+
+.boton-designar:hover {
+  background-color: #334155;
+}
+
+/* Botón Verde: Asignar */
+.boton-asignar {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.boton-asignar:hover {
+  background-color: #059669;
+}
+
+.icono-pequeno {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}

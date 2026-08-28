@@ -1,0 +1,69 @@
+<div class="contenedor-principal">
+  <!-- Encabezado de la Vista -->
+  <header class="seccion-encabezado">
+    <h1 class="titulo-vista">Registro de Inspecciones Asignadas</h1>
+    <p class="subtitulo-vista">Gestión de órdenes de inspección - Estado Por Designar</p>
+  </header>
+
+  <!-- Tabla de Registro de Inspecciones -->
+  <div class="contenedor-tabla">
+    <table mat-table [dataSource]="fuenteDatos" class="tabla-personalizada">
+      <!-- Columna N° -->
+      <ng-container matColumnDef="numero">
+        <th mat-header-cell *matHeaderCellDef>N°</th>
+        <td mat-cell *matCellDef="let elemento">{{ elemento.numero }}</td>
+      </ng-container>
+
+      <!-- Columna Especialidad -->
+      <ng-container matColumnDef="especialidad">
+        <th mat-header-cell *matHeaderCellDef>Especialidad</th>
+        <td mat-cell *matCellDef="let elemento" class="celda-destacada">
+          {{ elemento.especialidad }}
+        </td>
+      </ng-container>
+
+      <!-- Columna N° Memorandum / CITE -->
+      <ng-container matColumnDef="numeroCite">
+        <th mat-header-cell *matHeaderCellDef>N° Memorandum / CITE</th>
+        <td mat-cell *matCellDef="let elemento" class="celda-cite">{{ elemento.numeroCite }}</td>
+      </ng-container>
+
+      <!-- Columna Estado Operativo -->
+      <ng-container matColumnDef="estadoOperativo">
+        <th mat-header-cell *matHeaderCellDef>Estado Operativo</th>
+        <td mat-cell *matCellDef="let elemento">
+          <span class="insignia-estado">{{ elemento.estadoOperativo }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Columna Fecha Notificacion -->
+      <ng-container matColumnDef="fechaNotificacion">
+        <th mat-header-cell *matHeaderCellDef>Fecha Notificacion</th>
+        <td mat-cell *matCellDef="let elemento">{{ elemento.fechaNotificacion }}</td>
+      </ng-container>
+
+      <!-- Columna Acciones Disponibles -->
+      <ng-container matColumnDef="accionesDisponibles">
+        <th mat-header-cell *matHeaderCellDef>Acciones Disponibles</th>
+        <td mat-cell *matCellDef="let elemento">
+          <div class="grupo-botones-accion">
+            <button
+              type="button"
+              class="boton-accion boton-designar"
+              (click)="designarInspector(elemento)"
+            >
+              <mat-icon class="icono-pequeno">settings</mat-icon>
+              Designar Insp.
+            </button>
+            <button type="button" class="boton-accion boton-asignar" (click)="asignar(elemento)">
+              Asignar
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnasDesplegadas"></tr>
+      <tr mat-row *matRowDef="let fila; columns: columnasDesplegadas"></tr>
+    </table>
+  </div>
+</div>
