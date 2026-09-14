@@ -21,6 +21,7 @@ export interface IndicadorLugar {
 export interface DatosModalDesignar {
   cite: string;
   estado: string;
+  asignacionesPrevias?: any[]; // Recibe los datos seleccionados anteriormente
 }
 
 @Component({
@@ -75,13 +76,19 @@ export class JModalDesignarInspector implements OnInit {
   }
 
   inicializarFormulario(): void {
+    const previas = this.datos?.asignacionesPrevias || [];
+
     this.listaInspectores.forEach((inspector) => {
+      // Buscar si este inspector ya tenía datos guardados
+      const previo = previas.find((item: any) => item.idInspector === inspector.id);
+      const seleccionadosIniciales = previo ? previo.indicadoresSeleccionados : [];
+
       this.arregloInspectores.push(
         this.fb.group({
           idInspector: [inspector.id],
           cargo: [inspector.cargo],
           nombreCompleto: [inspector.nombreCompleto],
-          indicadoresSeleccionados: [[]],
+          indicadoresSeleccionados: [seleccionadosIniciales], // Se asoma la selección retenida
         }),
       );
     });
@@ -101,11 +108,15 @@ export class JModalDesignarInspector implements OnInit {
   esTodosSeleccionados(indice: number): boolean {
     const seleccionados: string[] =
       this.arregloInspectores.at(indice).get('indicadoresSeleccionados')?.value || [];
-    return seleccionados.length === this.listaIndicadores.length;
+    return (
+      seleccionados.length === this.listaIndicadores.length && this.listaIndicadores.length > 0
+    );
   }
 
-  guardarConfiguracion(): void {
+  guardar(): void {
     console.log('Configuración Guardada:', this.formularioAsignacion.value);
+
+    this.dialogRef.close(this.formularioAsignacion.value);
   }
 
   cerrarModal(): void {

@@ -34,6 +34,9 @@ export class JDesignarInspector {
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog); // llmar al modal
 
+  // Guardador de estado persistente indexado por CITE
+  private configuracionesGuardadas = new Map<string, any[]>();
+
   // Formulario Reactivo para gestionar acciones o filtros
   formularioInspeccion: FormGroup = this.fb.group({
     filtroEstado: ['POR DESIGNAR'],
@@ -58,37 +61,48 @@ export class JDesignarInspector {
     },
   ];
 
-  /*designarInspector(registro: InspeccionAsignada): void {
-    console.log('Designar Inspector para:', registro);
-  }
-
-  asignar(registro: InspeccionAsignada): void {
-    console.log('Asignar inspección:', registro);
-  }*/
-
   designarInspector(registro: InspeccionAsignada): void {
-    console.log('Designar Inspector para:', registro);
+    const cite = registro.numeroCite;
 
     const dialogRef = this.dialog.open(JModalDesignarInspector, {
       width: '900px',
       maxWidth: '95vw',
-      disableClose: true, // Evita cerrar al hacer clic afuera accidentalmente
+      disableClose: true,
       data: {
         cite: registro.numeroCite,
         estado: registro.estadoOperativo,
+        // Enviar datos guardados previamente para este CITE (si existen)
+        asignacionesPrevias: this.configuracionesGuardadas.get(cite) || [],
+        //asignacionesPrevias: this.configuracionesGuardadas.get(cite) || [],
       },
     });
 
-    // Suscripción al resultado enviado al cerrar el modal (ej. al hacer clic en "Notificar e Iniciar")
     dialogRef.afterClosed().subscribe((resultado) => {
-      if (resultado) {
-        console.log('Datos recibidos tras cerrar el modal:', resultado);
-        // Aquí puedes realizar llamadas al backend o refrescar la tabla
+      if (resultado && resultado.inspectores) {
+        // Almacenar las selecciones devueltas
+        this.configuracionesGuardadas.set(cite, resultado.inspectores);
+        console.log('Asignaciones persistidas para', cite, ':', resultado.inspectores);
       }
     });
   }
 
   asignar(registro: InspeccionAsignada): void {
-    console.log('Asignar inspección:', registro);
+    const cite = registro.numeroCite;
+
+    // Obtener los datos configurados en el modal para este CITE
+    const asignacionesGuardadas = this.configuracionesGuardadas.get(cite) || [];
+
+    // Filtrar solo los inspectores a los que se les asignó al menos un indicador
+    const inspectoresAsignados = asignacionesGuardadas.filter(
+      (item: any) => item.indicadoresSeleccionados && item.indicadoresSeleccionados.length > 0,
+    );
+
+    // Objeto consolidado listo para enviar al backend
+    const payloadFinal = {
+      ...registro,
+      inspectoresAsignados: inspectoresAsignados,
+    };
+
+    console.log('Asignación Final enviada:', payloadFinal);
   }
 }

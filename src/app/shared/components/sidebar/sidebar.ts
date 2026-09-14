@@ -65,6 +65,7 @@ export class Sidebar {
 
     const dialogRef = this.dialog.open(CambiarRolDialogo, {
       width: '350px',
+      disableClose: true,
       data: {
         rolesDisponibles: this.auth.usuarioActual()?.rol,
         rolActual: rol_actual,
@@ -76,7 +77,6 @@ export class Sidebar {
         this.ngZone.run(() => {
           this.usuarioRol = nuevo_rol;
           this.menu.actualizarMenuPorRol(nuevo_rol);
-          // Forzar el refresco del DOM
           this.cdr.detectChanges();
           this.router.navigate(['/inicio']);
         });
