@@ -82,6 +82,7 @@ export class Menu {
 
   constructor() {
     this.usuarioRoles = this.auth.usuarioActual()?.rol;
+
     console.log('Menu UsuarioRol :', this.usuarioRoles);
     this.menuItems = this.menuFiltradoPorRol1(this.usuarioRoles?.[0]);
   }
