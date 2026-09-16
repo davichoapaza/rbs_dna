@@ -44,7 +44,7 @@
           <div class="avatar-badge">
             <mat-icon>person</mat-icon>
           </div>
-          <span class="nombre-usuario">DAVID APAZA CANAZA</span>
+          <span class="nombre-usuario">{{ usuarioActual()?.nombre }}</span>
         </div>
         <!-- DEFINICIÓN DEL MENÚ FLOTANTE-->
         <mat-menu #profileMenu="matMenu" xPosition="before" class="custom-profile-menu">

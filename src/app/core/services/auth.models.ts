@@ -1,17 +1,20 @@
 export interface Rol {
   id: number;
-  codigo: string; // ej: 'DIRECTOR', 'JEFE', 'INSPECTOR'
+  codigo: string;
 }
 
 export interface UsuarioBackend {
   id: number;
   username: string;
   nombreCompleto: string;
-  roles: Rol[]; // <-- La propiedad se llama 'roles', no 'rol'
+  roles: Rol[];
   token: string;
   refreshToken: string;
   tokenType: string;
 }
 
-// Para mantener compatibilidad con el tipo antiguo si lo necesitas:
-export type UserRole = string;
+export interface AuthResponse {
+  exito: boolean;
+  mensaje: string;
+  datos: UsuarioBackend;
+}

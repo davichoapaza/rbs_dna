@@ -38,7 +38,7 @@ export class Sidebar {
   private menu = inject(Menu);
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
-
+  usuarioActual = this.auth.usuarioActual;
   get menuItems(): MenuItem[] {
     return this.menu.menuItems;
   }

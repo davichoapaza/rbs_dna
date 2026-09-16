@@ -62,16 +62,21 @@ export class Login {
     this.errorMessage.set('');
 
     const { usuario, password } = this.loginForm.value;
+    this.auth.inicioSession(usuario, password).subscribe({
+      next: (valido) => {
+        this.loading.set(false);
 
-    setTimeout(() => {
-      const valido = this.auth.inicioSession(usuario, password);
-      this.loading.set(false);
-
-      if (valido) {
-        this.router.navigate(['/inicio']);
-      } else {
-        this.errorMessage.set('Usuario o contraseña incorrectos');
-      }
-    }, 1000);
+        if (valido) {
+          this.router.navigate(['/inicio']);
+        } else {
+          this.errorMessage.set('Usuario o contraseña incorrectos');
+        }
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.errorMessage.set('Ocurrió un error al conectar con el servidor');
+        console.error('Error en login:', err);
+      },
+    });
   }
 }
