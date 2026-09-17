@@ -90,6 +90,7 @@ export class Auth {
           usuarioBackend.nombre = usuarioBackend.nombreCompleto;
           usuarioBackend.rol = usuarioBackend.roles?.map((r: any) => r.codigo.toLowerCase());
           console.log('el rol que tien es RRRRRRRRRRR  ', usuarioBackend);
+          console.log('*********---- 3. Autenticación Exitosa ----************');
 
           sessionStorage.setItem(this.token, usuarioBackend.token);
           sessionStorage.setItem(this.usuario, JSON.stringify(usuarioBackend));

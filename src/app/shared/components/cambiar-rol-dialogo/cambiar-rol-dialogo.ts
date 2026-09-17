@@ -26,7 +26,6 @@ export class CambiarRolDialogo {
   constructor() {
     console.log('dddd ', this.data);
     console.log('dddddddddddddddddd IIIIIIIIIII :', this.data.rolesDisponibles);
-    console.log('dddddddddddddddddd IIIIIIIIIII :', this.data.rolActual);
   }
 
   cancelar(): void {

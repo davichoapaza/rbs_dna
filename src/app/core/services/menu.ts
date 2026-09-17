@@ -58,14 +58,9 @@ export class Menu {
 
     console.log('el rol que tiene es RRRRRRRRRRROOOOOL ', usuario?.roles?.[0]?.id);
 
-    // Acceso seguro con optional chaining (?.)
-    //console.log('el rol que tiene es RRRRRRRRRRR ', usuario.roles?.[0]?.id);
-
-    //const rolId:number = this.usuarioRoles || usuario?.roles?.[0].id;
     const rolId: number = usuario?.roles?.[0]?.id ?? 1;
 
     if (!usuarioId) {
-      //5961253
       console.warn('No hay usuario autenticado para cargar menús');
       this.menuItems = [];
       return;
@@ -77,9 +72,15 @@ export class Menu {
     });
   }
 
+  /*  const usuario_actual = this.auth.usuarioActual();
+    const rol_actual = usuario_actual?.roles?.[0]?.codigo;
+    const rol_actual_id = usuario_actual?.roles?.[0]?.id;
+*/
+
   obtenerMenusUsuarioRol(usuarioId: number, rolId: number): Observable<MenuItem[]> {
     const url = `${this.baseUrl}/usuario/${usuarioId}/rol/${rolId}`;
     console.log('los dato que llego son usuarioId:', usuarioId, 'rolId:', rolId);
+
     return this.http.get<MenuResponse>(url).pipe(
       map((response) => {
         if (response && response.exito && Array.isArray(response.datos)) {
@@ -96,5 +97,21 @@ export class Menu {
         return of([]);
       }),
     );
+  }
+  actualizarMenuPorRol(nuevo_rol: number): void {
+    const usuarioId = this.auth.usuarioActual()?.id;
+
+    console.log('Actualizando menú para el rol ID:', nuevo_rol);
+
+    if (!usuarioId) {
+      console.warn('No hay un usuario autenticado para actualizar el menú');
+      this.menuItems = [];
+      return;
+    }
+
+    this.obtenerMenusUsuarioRol(usuarioId, nuevo_rol).subscribe((items: MenuItem[]) => {
+      this.menuItems = items;
+      console.log(`Menús cargados exitosamente para el rol ID ${nuevo_rol}:`, this.menuItems);
+    });
   }
 }

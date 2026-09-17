@@ -60,7 +60,45 @@ export class Sidebar {
     };
     return this.usuarioRol ? colors[this.usuarioRol] : '#ecedee';
   }
+
   abrirModalCambiarRol() {
+    const usuario_actual = this.auth.usuarioActual();
+    // Usa el rol seleccionado localmente (this.usuarioRol) o el primero por defecto
+    const rol_actual_codigo = this.usuarioRol?.toUpperCase() || usuario_actual?.roles?.[0]?.codigo;
+
+    const dialogRef = this.dialog.open(CambiarRolDialogo, {
+      width: '350px',
+      disableClose: true,
+      data: {
+        rolesDisponibles: usuario_actual?.roles?.map((r) => r.codigo) || [],
+        rolActual: rol_actual_codigo,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((nuevo_rol: string | undefined) => {
+      if (nuevo_rol) {
+        this.ngZone.run(() => {
+          // 1. Busca el objeto del rol correspondiente para obtener su ID numérico
+          const rolEncontrado = usuario_actual?.roles?.find(
+            (r) => r.codigo.toUpperCase() === nuevo_rol.toUpperCase(),
+          );
+
+          const nuevoRolId = rolEncontrado?.id ?? 1;
+
+          // 2. Actualiza la variable local de estado para que persista el nuevo rol activo
+          this.usuarioRol = nuevo_rol.toLowerCase() as UserRole;
+
+          // 3. Ejecuta la actualización dinámica del menú en el servicio
+          this.menu.actualizarMenuPorRol(nuevoRolId);
+
+          this.cdr.detectChanges();
+          this.router.navigate(['/inicio']);
+        });
+      }
+    });
+  }
+
+  /*abrirModalCambiarRol() {
     const usuario_actual = this.auth.usuarioActual();
     ///const rol_actual = this.usuarioRol || usuario_actual?.roles?.[0]?.id; // || 'director';
     const rol_actual = usuario_actual?.roles?.[0]?.codigo;
@@ -83,15 +121,17 @@ export class Sidebar {
     });
 
     dialogRef.afterClosed().subscribe((nuevo_rol: string | undefined) => {
+      console.log('Nuevo rol seleccionado:', nuevo_rol);
+
       if (nuevo_rol) {
         this.ngZone.run(() => {
           //this.usuarioRol = nuevo_rol;
           console.log('Nuevo rol seleccionado:', nuevo_rol);
-          // this.menu.actualizarMenuPorRol(1);
+          this.menu.actualizarMenuPorRol(3);
           this.cdr.detectChanges();
           this.router.navigate(['/inicio']);
         });
       }
-    }); //Trabjar el cambio de roles
-  }
+    }); 
+  } */
 }
