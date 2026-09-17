@@ -3,7 +3,7 @@
   <mat-radio-group [(ngModel)]="rolSeleccionado" class="roles-group">
     @for (rol of data.rolesDisponibles; track rol) {
       <mat-radio-button [value]="rol" class="rol-option">
-        {{ rol | titlecase }}
+        {{ rol }}
       </mat-radio-button>
     }
   </mat-radio-group>

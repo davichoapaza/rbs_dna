@@ -62,26 +62,36 @@ export class Sidebar {
   }
   abrirModalCambiarRol() {
     const usuario_actual = this.auth.usuarioActual();
-    const rol_actual: UserRole = this.usuarioRol || usuario_actual?.rol?.[0] || 'director';
-
+    ///const rol_actual = this.usuarioRol || usuario_actual?.roles?.[0]?.id; // || 'director';
+    const rol_actual = usuario_actual?.roles?.[0]?.codigo;
+    const rol_actual_id = usuario_actual?.roles?.[0]?.id;
+    //usuario?.roles?.[0]?.id
+    console.log('RRRRRRRRRRRRR usuario_actual :', usuario_actual);
+    console.log('RRRRRRRRRRRRR usuario_actual id :', rol_actual_id);
+    console.log('rol_actual:', rol_actual);
+    console.log(
+      '************DDD ************',
+      this.auth.usuarioActual()?.roles?.map((r) => r.codigo) || [],
+    );
     const dialogRef = this.dialog.open(CambiarRolDialogo, {
       width: '350px',
       disableClose: true,
       data: {
-        rolesDisponibles: this.auth.usuarioActual()?.rol,
+        rolesDisponibles: this.auth.usuarioActual()?.roles?.map((r) => r.codigo) || [],
         rolActual: rol_actual,
       },
     });
 
-    dialogRef.afterClosed().subscribe((nuevo_rol: UserRole | undefined) => {
+    dialogRef.afterClosed().subscribe((nuevo_rol: string | undefined) => {
       if (nuevo_rol) {
         this.ngZone.run(() => {
-          this.usuarioRol = nuevo_rol;
-          //  this.menu.actualizarMenuPorRol(nuevo_rol);
+          //this.usuarioRol = nuevo_rol;
+          console.log('Nuevo rol seleccionado:', nuevo_rol);
+          this.menu.actualizarMenuPorRol(nuevo_rol);
           this.cdr.detectChanges();
           this.router.navigate(['/inicio']);
         });
       }
-    });
+    }); //Trabjar el cambio de roles
   }
 }

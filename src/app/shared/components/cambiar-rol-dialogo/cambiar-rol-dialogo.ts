@@ -21,7 +21,13 @@ export class CambiarRolDialogo {
   dialogRef = inject(MatDialogRef<CambiarRolDialogo>);
   data = inject<DialogDataCambiarRol>(MAT_DIALOG_DATA);
 
-  rolSeleccionado: UserRole = this.data.rolActual;
+  rolSeleccionado = this.data.rolActual;
+
+  constructor() {
+    console.log('dddd ', this.data);
+    console.log('dddddddddddddddddd IIIIIIIIIII :', this.data.rolesDisponibles);
+    console.log('dddddddddddddddddd IIIIIIIIIII :', this.data.rolActual);
+  }
 
   cancelar(): void {
     this.dialogRef.close();
