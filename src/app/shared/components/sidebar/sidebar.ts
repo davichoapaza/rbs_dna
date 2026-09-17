@@ -87,7 +87,7 @@ export class Sidebar {
         this.ngZone.run(() => {
           //this.usuarioRol = nuevo_rol;
           console.log('Nuevo rol seleccionado:', nuevo_rol);
-          this.menu.actualizarMenuPorRol(nuevo_rol);
+          // this.menu.actualizarMenuPorRol(1);
           this.cdr.detectChanges();
           this.router.navigate(['/inicio']);
         });
