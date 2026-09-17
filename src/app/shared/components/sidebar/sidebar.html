@@ -33,20 +33,18 @@
     <!-- Barra superior con botón para ocultar/mostrar el menú -->
     <mat-toolbar>
       <button mat-icon-button (click)="sidenav.toggle()">
-        <!-- Añadimos style="color: #1e2538 !important;" directamente aquí -->
         <mat-icon style="color: #1e2538 !important">menu</mat-icon>
       </button>
       <span>RBS-DNA</span>
       <div class="espacio-toolbar"></div>
       <div class="acciones-toolbar">
-        <!-- Al hacer clic aquí, se abrirá el menú con id #profileMenu -->
         <div class="avatar-container" [matMenuTriggerFor]="profileMenu">
           <div class="avatar-badge">
             <mat-icon>person</mat-icon>
           </div>
           <span class="nombre-usuario">{{ usuarioActual()?.nombre }}</span>
         </div>
-        <!-- DEFINICIÓN DEL MENÚ FLOTANTE-->
+
         <mat-menu #profileMenu="matMenu" xPosition="before" class="custom-profile-menu">
           <button mat-menu-item>
             <mat-icon class="icon-account">person_outline</mat-icon>

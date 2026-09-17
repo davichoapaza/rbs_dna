@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Auth, UserRole } from '../../../core/services/auth';
 import { Menu, MenuItem } from '../../../core/services/menu';
 import { CambiarRolDialogo } from '../cambiar-rol-dialogo/cambiar-rol-dialogo';
+// En cambiar-rol-dialogo.ts
 
 @Component({
   selector: 'app-sidebar',
@@ -76,7 +77,7 @@ export class Sidebar {
       if (nuevo_rol) {
         this.ngZone.run(() => {
           this.usuarioRol = nuevo_rol;
-          this.menu.actualizarMenuPorRol(nuevo_rol);
+          //  this.menu.actualizarMenuPorRol(nuevo_rol);
           this.cdr.detectChanges();
           this.router.navigate(['/inicio']);
         });

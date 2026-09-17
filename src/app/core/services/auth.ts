@@ -6,12 +6,29 @@ import { Observable, of, Subject } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 
 export type UserRole = 'administrador' | 'director' | 'jefe' | 'inspector';
-
+/*
 export interface Usuario {
   id: number;
   nombre: string;
   email: string;
   rol?: UserRole[];
+}
+*/
+
+export interface RolBackend {
+  id: number;
+  codigo: string;
+}
+
+export interface Usuario {
+  id: number;
+  username?: string;
+  nombreCompleto?: string;
+  nombre?: string;
+  email?: string;
+  roles?: RolBackend[]; // <--- Agrega esta propiedad
+  rol?: UserRole[]; // Propiedad de retrocompatibilidad
+  token?: string;
 }
 
 @Injectable({
@@ -72,9 +89,11 @@ export class Auth {
           // Mapeo de campos de compatibilidad
           usuarioBackend.nombre = usuarioBackend.nombreCompleto;
           usuarioBackend.rol = usuarioBackend.roles?.map((r: any) => r.codigo.toLowerCase());
+          console.log('el rol que tien es RRRRRRRRRRR  ', usuarioBackend);
 
           sessionStorage.setItem(this.token, usuarioBackend.token);
           sessionStorage.setItem(this.usuario, JSON.stringify(usuarioBackend));
+          console.log();
 
           // Actualizar Signals reactivos
           this.autenticado.set(true);
@@ -90,6 +109,7 @@ export class Auth {
       }),
     );
   }
+
   /*inicioSession(usuario: string, password: string): Observable<boolean> {
     if (!this.browser) {
       this.loginResult$.next(false);

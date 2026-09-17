@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { UserRole } from '../../../core/services/menu';
+
 export interface DialogDataCambiarRol {
   rolesDisponibles: UserRole[];
   rolActual: UserRole;
