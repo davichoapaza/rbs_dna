@@ -46,9 +46,9 @@
         </div>
 
         <mat-menu #profileMenu="matMenu" xPosition="before" class="custom-profile-menu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="abrirModalCambiarPassword()">
             <mat-icon class="icon-account">person_outline</mat-icon>
-            <span>Mi cuenta</span>
+            <span>Cambiar contraseña</span>
           </button>
           <button mat-menu-item (click)="abrirModalCambiarRol()">
             <mat-icon class="icon-help">switch_account</mat-icon>

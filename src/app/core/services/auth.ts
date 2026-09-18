@@ -6,14 +6,6 @@ import { Observable, of, Subject } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 
 export type UserRole = 'administrador' | 'director' | 'jefe' | 'inspector';
-/*
-export interface Usuario {
-  id: number;
-  nombre: string;
-  email: string;
-  rol?: UserRole[];
-}
-*/
 
 export interface RolBackend {
   id: number;
@@ -110,44 +102,6 @@ export class Auth {
       }),
     );
   }
-
-  /*inicioSession(usuario: string, password: string): Observable<boolean> {
-    if (!this.browser) {
-      this.loginResult$.next(false);
-      return of(false);
-    }
-
-    const obs$ = this.http.post<any>(this.apiUrl, { username: usuario, password: password }).pipe(
-      tap((response) => {
-        if (response && response.exito) {
-          const usuarioBackend = response.datos;
-
-          usuarioBackend.nombre = usuarioBackend.nombreCompleto;
-          usuarioBackend.rol = usuarioBackend.roles?.map((r: any) => r.codigo.toLowerCase());
-
-          sessionStorage.setItem(this.token, usuarioBackend.token);
-          sessionStorage.setItem(this.usuario, JSON.stringify(usuarioBackend));
-
-          this.autenticado.set(true);
-          this.usuarioActual.set(usuarioBackend);
-        } else {
-          console.warn('Servidor respondió pero exito == false', response?.mensaje);
-        }
-      }),
-      map((response) => !!response?.exito),
-      catchError((error) => {
-        console.error('ERROR HTTP O CORS EN LA PETICIÓN', error);
-        return of(false);
-      }),
-    );
-
-    console.log(' se dispare');
-    // Suscripción interna: garantiza que la petición SIEMPRE se dispare
-    obs$.subscribe((ok) => this.loginResult$.next(ok));
-
-    return obs$;
-  }*/
-
   loggin(): boolean {
     if (!this.browser) return false;
     return this.tieneToken();
@@ -159,6 +113,25 @@ export class Auth {
     this.autenticado.set(false);
     this.usuarioActual.set(null);
     this.router.navigate(['/login']);
+  }
+
+  cambiarPassword(payload: { passwordActual: string; passwordNueva: string }): Observable<any> {
+    //const url = 'http://localhost:8080/api/v1/seguridad/cambiar-password';
+    const url = 'http://localhost:8080/api/v1/auth/cambiar-password';
+
+    return this.http.put<any>(url, payload).pipe(
+      tap((response) => {
+        if (response && response.exito) {
+          console.log('Contraseña cambiada con éxito');
+        } else {
+          console.warn('Error al cambiar la contraseña', response?.mensaje);
+        }
+      }),
+      catchError((error) => {
+        console.error('Error HTTP al cambiar la contraseña', error);
+        return of({ exito: false, mensaje: 'Error al cambiar la contraseña' });
+      }),
+    );
   }
 }
 

@@ -1,0 +1,75 @@
+<mat-card class="password-card">
+  <mat-card-header>
+    <mat-card-title>Cambiar Contraseña</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="passwordForm" (ngSubmit)="guardarPassword()">
+      <!-- Contraseña Actual -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña Actual</mat-label>
+        <input
+          matInput
+          [type]="ocultarActual ? 'password' : 'text'"
+          formControlName="passwordActual"
+        />
+        <button mat-icon-button matSuffix type="button" (click)="ocultarActual = !ocultarActual">
+          <mat-icon>{{ ocultarActual ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (passwordForm.get('passwordActual')?.hasError('required')) {
+          <mat-error>La contraseña actual es obligatoria.</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Nueva Contraseña -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nueva Contraseña</mat-label>
+        <input
+          matInput
+          [type]="ocultarNueva ? 'password' : 'text'"
+          formControlName="passwordNueva"
+        />
+        <button mat-icon-button matSuffix type="button" (click)="ocultarNueva = !ocultarNueva">
+          <mat-icon>{{ ocultarNueva ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (passwordForm.get('passwordNueva')?.hasError('required')) {
+          <mat-error>La nueva contraseña es obligatoria.</mat-error>
+        }
+        @if (passwordForm.get('passwordNueva')?.hasError('minlength')) {
+          <mat-error>Debe tener al menos 8 caracteres.</mat-error>
+        }
+        @if (passwordForm.get('passwordNueva')?.hasError('pattern')) {
+          <mat-error>Debe contener al menos una mayúscula, una minúscula y un número.</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Repetir Contraseña -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Repetir Nueva Contraseña</mat-label>
+        <input
+          matInput
+          [type]="ocultarRepetir ? 'password' : 'text'"
+          formControlName="repetirPassword"
+        />
+        <button mat-icon-button matSuffix type="button" (click)="ocultarRepetir = !ocultarRepetir">
+          <mat-icon>{{ ocultarRepetir ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (passwordForm.get('repetirPassword')?.hasError('required')) {
+          <mat-error>Debes repetir la nueva contraseña.</mat-error>
+        }
+        @if (passwordForm.get('repetirPassword')?.hasError('noCoinciden')) {
+          <mat-error>Las contraseñas no coinciden.</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Botones de Acción -->
+      <div class="actions">
+        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="passwordForm.invalid">
+          Actualizar Contraseña
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

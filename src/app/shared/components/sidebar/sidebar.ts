@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Auth, UserRole } from '../../../core/services/auth';
 import { Menu, MenuItem } from '../../../core/services/menu';
 import { CambiarRolDialogo } from '../cambiar-rol-dialogo/cambiar-rol-dialogo';
+import { MiCuenta } from '../mi-cuenta/mi-cuenta';
 // En cambiar-rol-dialogo.ts
 
 @Component({
@@ -59,6 +60,21 @@ export class Sidebar {
       inspector: '#90eaa5',
     };
     return this.usuarioRol ? colors[this.usuarioRol] : '#ecedee';
+  }
+
+  abrirModalCambiarPassword() {
+    const dialogRef = this.dialog.open(MiCuenta, {
+      width: '400px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        console.log('Contraseña cambiada con éxito');
+      } else {
+        console.log('Cambio de contraseña cancelado');
+      }
+    });
   }
 
   abrirModalCambiarRol() {
