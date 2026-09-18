@@ -87,15 +87,12 @@ export class MiCuenta {
       passwordNueva: this.passwordForm.value.passwordNueva,
     };
 
-    // Petición al backend
     this.usuarioService.cambiarPassword(payload).subscribe({
       next: (res) => {
         this.cargando = false;
         this.snackBar.open(res.mensaje || 'Contraseña actualizada con éxito', 'Aceptar', {
           duration: 4000,
         });
-
-        // Cierra el modal si existe o resetea el formulario
         if (this.dialogRef) {
           this.dialogRef.close(true);
         } else {
@@ -111,12 +108,11 @@ export class MiCuenta {
       },
     });
   }
-
   cancelar(): void {
     if (this.dialogRef) {
-      this.dialogRef.close();
+      this.dialogRef.close(); // Cierra el modal de Angular Material
     } else {
-      this.passwordForm.reset();
+      this.passwordForm.reset(); // Resetea el formulario si no es un modal
     }
   }
 }

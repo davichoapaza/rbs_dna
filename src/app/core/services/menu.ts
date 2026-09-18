@@ -48,16 +48,6 @@ export class Menu {
   cargarMenuDesdeBackend(): void {
     const usuario = this.auth.usuarioActual();
     const usuarioId = usuario?.id;
-    //const rolId = usuario?.roles?.[0];// || 1;  //'administrador';
-    //console.log('el rol que tien es RRRRRRRRRRR  ', usuarioBackend.roles[0].id);
-    console.log('usuarioId:', usuario);
-
-    console.log('usuarioId:', usuario?.rol?.[0]);
-    console.log('usuarioId:', usuario);
-    console.log('x*************************x');
-
-    console.log('el rol que tiene es RRRRRRRRRRROOOOOL ', usuario?.roles?.[0]?.id);
-
     const rolId: number = usuario?.roles?.[0]?.id ?? 1;
 
     if (!usuarioId) {
@@ -67,15 +57,12 @@ export class Menu {
     }
 
     this.obtenerMenusUsuarioRol(usuarioId, rolId).subscribe((items: MenuItem[]) => {
+      console.log('******************************');
+      console.log('Menús cargados desde el backend:', items);
       this.menuItems = items;
       console.log(' cargados:', this.menuItems);
     });
   }
-
-  /*  const usuario_actual = this.auth.usuarioActual();
-    const rol_actual = usuario_actual?.roles?.[0]?.codigo;
-    const rol_actual_id = usuario_actual?.roles?.[0]?.id;
-*/
 
   obtenerMenusUsuarioRol(usuarioId: number, rolId: number): Observable<MenuItem[]> {
     const url = `${this.baseUrl}/usuario/${usuarioId}/rol/${rolId}`;

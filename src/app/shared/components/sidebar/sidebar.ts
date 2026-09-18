@@ -11,7 +11,6 @@ import { Auth, UserRole } from '../../../core/services/auth';
 import { Menu, MenuItem } from '../../../core/services/menu';
 import { CambiarRolDialogo } from '../cambiar-rol-dialogo/cambiar-rol-dialogo';
 import { MiCuenta } from '../mi-cuenta/mi-cuenta';
-// En cambiar-rol-dialogo.ts
 
 @Component({
   selector: 'app-sidebar',
@@ -49,6 +48,7 @@ export class Sidebar {
     this.auth.logout();
   }
   constructor() {
+    this.menuItems; // Inicializa los elementos del menú
     this.usuarioRol = this.auth.usuarioActual()?.rol?.[0] || 'director';
   }
 
