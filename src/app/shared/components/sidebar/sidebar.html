@@ -13,7 +13,7 @@
       </div>
     </div>
     <!-- Lista de menú -->
-    <mat-nav-list class="menu-lista">
+    <!--<mat-nav-list class="menu-lista">
       @for (item of menuItems; track item.path) {
         <a
           mat-list-item
@@ -23,6 +23,16 @@
         >
           <mat-icon matListItemIcon style="color: white !important">{{ item.icon }}</mat-icon>
           <span matListItemTitle style="color: white !important">{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  -->
+
+    <mat-nav-list>
+      @for (item of menuItems; track item.path) {
+        <a mat-list-item [routerLink]="item.path" routerLinkActive="active">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
         </a>
       }
     </mat-nav-list>
