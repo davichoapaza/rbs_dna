@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 
-export type UserRole = 'administrador' | 'director' | 'jefe' | 'inspector';
+export type UserRole = 'admin' | 'director' | 'jefe' | 'inspector';
 
 export interface RolBackend {
   id: number;
@@ -69,7 +69,6 @@ export class Auth {
   inicioSession(usuario: string, password: string): Observable<boolean> {
     if (!this.browser) return of(false);
     console.log('Disparando petición HTTP de inicio de sesión...');
-    // Retorna directamente la tubería HTTP sin hacer .subscribe() interno
     return this.http.post<any>(this.apiUrl, { username: usuario, password: password }).pipe(
       tap((response) => {
         if (response && response.exito) {

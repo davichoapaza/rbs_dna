@@ -40,9 +40,7 @@ export class Sidebar {
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   usuarioActual = this.auth.usuarioActual;
-  /*get menuItems(): MenuItem[] {
-    return this.menu.menuItems;
-  }*/
+
   get menuItems(): MenuItem[] {
     return this.menu.menuItems(); // <-- DEBE LLEVAR PARÉNTESIS ()
   }
@@ -51,18 +49,19 @@ export class Sidebar {
     this.auth.logout();
   }
   constructor() {
-    //this.menuItems; // Inicializa los elementos del menú
+    //this.menuItems;
     this.usuarioRol = this.auth.usuarioActual()?.rol?.[0] || 'director';
   }
 
   obtenerColor(): string {
+    console.log('Usuario actual:', this.auth.usuarioActual());
     const colors: Record<UserRole, string> = {
-      administrador: '#eb8e8e',
+      admin: '#e80505',
       director: '#4ecdc4',
       jefe: '#ffd93d',
       inspector: '#90eaa5',
     };
-    return this.usuarioRol ? colors[this.usuarioRol] : '#ecedee';
+    return this.usuarioRol ? colors[this.usuarioRol] : '#eae7e7';
   }
 
   abrirModalCambiarPassword() {
