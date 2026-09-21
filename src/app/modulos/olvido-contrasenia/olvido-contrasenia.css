@@ -1,0 +1,29 @@
+.contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  padding: 1rem;
+}
+
+.marco {
+  max-width: 450px;
+  width: 100%;
+  padding: 1.5rem;
+}
+
+.espacio-contenedor {
+  margin-top: 1.5rem;
+}
+
+.ancho {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.accion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}

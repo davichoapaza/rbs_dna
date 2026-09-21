@@ -1,0 +1,33 @@
+<div class="contenedor">
+  <mat-card class="marco">
+    <mat-card-header>
+      <mat-card-title>Recuperar Contraseña</mat-card-title>
+      <mat-card-subtitle>
+        Ingresa tu correo electrónico registrado y te enviaremos un enlace para restablecerla.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="espacio-contenedor">
+      <form [formGroup]="olvidoForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="ancho">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" formControlName="correo" placeholder="ejemplo@dgac.gob.bo" />
+          <mat-icon matSuffix>email</mat-icon>
+
+          @if (olvidoForm.get('correo')?.hasError('required')) {
+            <mat-error>El correo electrónico es obligatorio.</mat-error>
+          }
+          @if (olvidoForm.get('correo')?.hasError('email')) {
+            <mat-error>Ingresa una dirección de correo válida.</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="accion">
+          <button mat-button type="button" (click)="cancelar()">Volver al Login</button>
+
+          <button mat-raised-button color="primary" type="submit">Enviar Instrucciones</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

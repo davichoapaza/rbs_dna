@@ -15,7 +15,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Auth } from '../../../core/services/auth';
-
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { OlvidoContrasenia } from '../../olvido-contrasenia/olvido-contrasenia';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -38,7 +40,8 @@ export class Login {
   private fb = inject(FormBuilder);
   private auth = inject(Auth);
   private router = inject(Router);
-
+  private dialog = inject(MatDialog);
+  private dialogRef = inject(MatDialogRef<OlvidoContrasenia>, { optional: true });
   loginForm: FormGroup;
   hidePassword = true;
   loading = signal(false);
@@ -77,6 +80,17 @@ export class Login {
         this.errorMessage.set('Ocurrió un error al conectar con el servidor');
         console.error('Error en login:', err);
       },
+    });
+  }
+
+  abrirOlvidoContrasenia(): void {
+    console.log('preciono olvido contrasenia');
+
+    const dialogRef = this.dialog.open(OlvidoContrasenia, {
+      width: '400px',
+      height: 'auto', // Se ajusta automáticamente al contenido
+
+      disableClose: true,
     });
   }
 }
