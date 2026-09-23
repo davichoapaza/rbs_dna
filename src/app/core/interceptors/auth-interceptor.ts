@@ -4,10 +4,10 @@ import { Auth } from '../services/auth'; // Tu servicio de autenticación
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(Auth);
-  const token = authService.obtenerToken(); // O como obtengas tu token
+  const token = authService.obtenerToken();
   console.log('DAVID TOKEN INTERCEPTOR : ', token);
   if (token) {
-    // Clonamos la petición para agregar la cabecera de autorización (ya que los req son inmutables)
+    // agrega la cabecera de autorización (ya que los req son inmutables)
     const clonedReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,

@@ -81,10 +81,11 @@ export class DDireccionInicio {
   }
 
   adicionarATabla(): void {
+    /*
     if (this.formularioRegistro.invalid) {
       this.formularioRegistro.markAllAsTouched();
       return;
-    }
+    }*/
 
     const valoresFormulario = this.formularioRegistro.value;
     const nuevoRegistro: RegistroDocumento = {
