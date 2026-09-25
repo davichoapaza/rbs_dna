@@ -8,6 +8,14 @@ export interface CrearBorrador {
   titulo: string;
   // Agrega aquí los campos adicionales que requiera tu endpoint backend
 }
+
+export interface InstruirYDerivar {
+  ordenId: number;
+  usuarioRolId: number;
+  destinatariosUsuarioRolIds: number[];
+  observaciones: string;
+}
+
 /*
 {
   "codigoOrden": "ORD-2026-004",
@@ -37,12 +45,25 @@ export class FlujoOperaciones {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/operaciones/flujo/crear-borrador';
 
-  crearBorrador(payload: CrearBorrador): Observable<RespuestaApi> {
-    return this.http.post<RespuestaApi>(this.apiUrl, payload);
+  crearBorrador(crearBorrador: CrearBorrador): Observable<RespuestaApi> {
+    return this.http.post<RespuestaApi>(this.apiUrl, crearBorrador);
   }
 
   // En tu servicio FlujoOperaciones (flujo-operaciones.ts)
   obtenerOrdenesInspeccion(): Observable<any> {
     return this.http.get<any>('http://localhost:8080/api/operaciones/flujo/ordenes-inspeccion');
+  }
+
+  //http://localhost:8080/api/operaciones/flujo/instruir-y-derivar
+
+  instruirYDerivar(instruirYDerivar: InstruirYDerivar): Observable<any> {
+    return this.http.post<any>(
+      'http://localhost:8080/api/operaciones/flujo/instruir-y-derivar',
+      instruirYDerivar,
+    );
+  }
+
+  obtenerRolYUsuario(rolId: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:8080/api/v1/seguridad/usuarios/rol/${rolId}`);
   }
 }

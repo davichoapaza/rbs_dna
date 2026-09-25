@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { Auth } from '../../core/services/auth';
 import { CrearBorrador, FlujoOperaciones } from '../../core/services/flujo-operaciones';
-
+import Swal from 'sweetalert2';
 export interface RegistroDocumento {
   id: number;
   cite: string;
@@ -43,7 +43,7 @@ export class DDireccionInicio implements OnInit {
   private flujoService = inject(FlujoOperaciones);
   usuario = this.authService.usuarioActual;
   private cdr = inject(ChangeDetectorRef); // para que detecte cualquier cambio hay que inyectar ChangeDetectorRef
-
+  private index: number = 1; // Variable para generar IDs secuenciales
   formularioRegistro: FormGroup = this.fb.group({
     cite: ['', [Validators.required, Validators.minLength(5)]],
     archivoPdf: [null, [Validators.required]],
@@ -66,11 +66,44 @@ export class DDireccionInicio implements OnInit {
   ngOnInit(): void {
     this.cargarDatosTabla();
   }
+  // Método opcional para manejar la acción 'Ver'
+  verDetalle(elemento: any): void {
+    console.log('Visualizando orden instruida:', elemento);
+    // Aquí puedes abrir un dialog o navegar a la vista de detalles
+  }
 
   cargarDatosTabla(): void {
     this.flujoService.obtenerOrdenesInspeccion().subscribe({
       next: (response) => {
-        console.log('Datos recibidos del backend:', response);
+        console.log('Datos recibidos del backend:', response.datos);
+
+        const listaDatos = Array.isArray(response) ? response : response.datos || [];
+
+        this.fuenteDatos = listaDatos.map((item: any) => ({
+          id: item.id,
+          cite: item.codigoOrden || item.cite || 'SIN CITE',
+          nombreArchivo: item.titulo || item.nombreArchivo || 'documento.pdf',
+          // Se mapea el estado devuelto por la API
+          estado: item.nombreEstado || item.estado || '[D] BORRADOR',
+          actorActual: item.actorActual || 'Dirección DNA',
+          subtextoActor: item.subtextoActor || 'Pendiente de instruir',
+          fecha: item.fechaCreacion
+            ? new Date(item.fechaCreacion).toLocaleString('es-BO')
+            : new Date().toLocaleString('es-BO'),
+        }));
+
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al cargar la lista de órdenes de inspección:', error);
+      },
+    });
+  }
+
+  /*cargarDatosTabla(): void {
+    this.flujoService.obtenerOrdenesInspeccion().subscribe({
+      next: (response) => {
+        console.log('Datos recibidos del backend:', response.datos);
 
         // Si la respuesta viene envuelta en una estructura genérica como (response.datos o response)
         const listaDatos = Array.isArray(response) ? response : response.datos || [];
@@ -78,9 +111,10 @@ export class DDireccionInicio implements OnInit {
         // Mapeo de la respuesta del servidor a la interfaz RegistroDocumento
         this.fuenteDatos = listaDatos.map((item: any) => ({
           id: item.id,
+          // id: this.index++,
           cite: item.codigoOrden || item.cite || 'SIN CITE',
           nombreArchivo: item.titulo || item.nombreArchivo || 'documento.pdf',
-          estado: item.estado || '[D] BORRADOR',
+          estado: item.nombreEstado || '[D] BORRADOR',
           actorActual: item.actorActual || 'Dirección DNA',
           subtextoActor: item.subtextoActor || 'Pendiente de instruir',
           fecha: item.fechaCreacion
@@ -89,15 +123,15 @@ export class DDireccionInicio implements OnInit {
         }));
 
         // Forzar la detección de cambios después de actualizar la fuente de datos
-        // se ejecuta para asegurarse de que la vista se actualice correctamente después de recibir los datos del backend
+        // se ejecuta para asegurarse de que la vista se actualice
+        // correctamente después de recibir los datos del backend
         this.cdr.detectChanges();
       },
-
       error: (error) => {
         console.error('Error al cargar la lista de órdenes de inspección:', error);
       },
     });
-  }
+  }*/
 
   alSeleccionarArchivo(evento: Event): void {
     const elementoInput = evento.target as HTMLInputElement;
@@ -144,12 +178,114 @@ export class DDireccionInicio implements OnInit {
     });
   }
 
+  // 2. Confirmación con entrada de Observación para Instruir
   instruir(registro: RegistroDocumento): void {
-    console.log('Instruir registro:', registro);
+    Swal.fire({
+      title: 'Instruir y Derivar Orden',
+      input: 'textarea',
+      inputLabel: 'Observaciones',
+      inputValue: 'Se instruye la revisión a las jefaturas técnicas',
+      showCancelButton: true,
+      confirmButtonText: 'Enviar e Instruir',
+      cancelButtonText: 'Cancelar',
+
+      inputValidator: (value) => {
+        if (!value) {
+          return '¡Debe ingresar una observación!';
+        }
+        return null;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const observacionIngresada = result.value;
+        this.ejecutarFlujoInstruir(registro, observacionIngresada);
+      }
+    });
   }
 
-  eliminar(id: number): void {
+  private ejecutarFlujoInstruir(registro: RegistroDocumento, observaciones: string): void {
+    this.flujoService.obtenerRolYUsuario(2).subscribe({
+      next: (usuariosRolResponse) => {
+        const listaUsuarios = Array.isArray(usuariosRolResponse)
+          ? usuariosRolResponse
+          : usuariosRolResponse?.datos || [];
+
+        const destinatariosIds = listaUsuarios.map((u: any) => u.id);
+
+        const payload = {
+          ordenId: registro.id,
+          usuarioRolId: this.usuario()?.id ?? 0,
+          destinatariosUsuarioRolIds: destinatariosIds,
+          observaciones: observaciones, // Usamos la observación digitada en el modal
+        };
+
+        this.flujoService.instruirYDerivar(payload).subscribe({
+          next: (res) => {
+            Swal.fire('Éxito', 'La orden fue instruida y derivada correctamente.', 'success');
+            this.cargarDatosTabla();
+          },
+          error: (err) => {
+            Swal.fire('Error', 'No se pudo instruir la orden.', 'error');
+          },
+        });
+      },
+    });
+  }
+
+  /*instruir(registro: RegistroDocumento): void {
+    console.log('ID del registro a instruir:', registro.id);
+
+    this.flujoService.obtenerRolYUsuario(2).subscribe({
+      next: (usuariosRolResponse) => {
+        console.log('Usuarios por rol obtenidos:', usuariosRolResponse);
+        const listaUsuarios: any[] = Array.isArray(usuariosRolResponse)
+          ? usuariosRolResponse
+          : usuariosRolResponse?.datos || [];
+        const destinatariosIds: number[] = listaUsuarios.map((u: any) => u.id);
+        console.log('los destinatarios Ids son: ', destinatariosIds);
+        const payload = {
+          ordenId: registro.id,
+          usuarioRolId: this.usuario()?.id ?? 0,
+          destinatariosUsuarioRolIds: destinatariosIds,
+          observaciones: 'Se instruye la revisión a las jefaturas',
+        };
+        console.log('Payload a enviar:', payload);
+
+        this.flujoService.instruirYDerivar(payload).subscribe({
+          next: (res) => {
+            console.log('Instrucción enviada con éxito:', res);
+            this.cargarDatosTabla(); // Recargar la lista de la tabla
+          },
+          error: (err) => {
+            console.error('Error al instruir y derivar:', err);
+          },
+        });
+      },
+    });
+  }*/
+  /*eliminar(id: number): void {
+    console.log('Eliminar registro con ID:', id);
+
     this.fuenteDatos = this.fuenteDatos.filter((item) => item.id !== id);
+  }*/
+
+  // 1. Confirmación para Eliminar
+  eliminar(id: number): void {
+    Swal.fire({
+      title: '¿Confirmar eliminación?',
+      text: 'Esta acción no se podrá deshacer',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.fuenteDatos = this.fuenteDatos.filter((item) => item.id !== id);
+        Swal.fire('Eliminado', 'El registro ha sido eliminado.', 'success');
+      }
+    });
   }
 }
 
