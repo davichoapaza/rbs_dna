@@ -27,8 +27,8 @@ export interface Usuario {
   providedIn: 'root',
 })
 export class Auth {
-  private token = 'auth_token';
-  private usuario = 'user_data';
+  private token = 'authtoken';
+  private usuario = 'user';
   private browser: boolean;
   private apiUrl = 'http://localhost:8080/api/v1/auth/login';
 
@@ -105,9 +105,7 @@ export class Auth {
   }
 
   cambiarPassword(payload: { passwordActual: string; passwordNueva: string }): Observable<any> {
-    //const url = 'http://localhost:8080/api/v1/seguridad/cambiar-password';
     const url = 'http://localhost:8080/api/v1/auth/cambiar-password';
-
     return this.http.put<any>(url, payload).pipe(
       tap((response) => {
         if (response && response.exito) {

@@ -54,7 +54,6 @@ export class Sidebar {
   }
 
   obtenerColor(): string {
-    console.log('Usuario actual:', this.auth.usuarioActual());
     const colors: Record<UserRole, string> = {
       admin: '#e80505',
       director: '#4ecdc4',
