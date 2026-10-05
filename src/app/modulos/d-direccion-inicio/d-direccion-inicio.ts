@@ -204,7 +204,7 @@ export class DDireccionInicio implements OnInit {
   }
 
   private ejecutarFlujoInstruir(registro: RegistroDocumento, observaciones: string): void {
-    this.flujoService.obtenerRolYUsuario(2).subscribe({
+    this.flujoService.obtenerRolYUsuario(2, 0, 2).subscribe({
       next: (usuariosRolResponse) => {
         const listaUsuarios = Array.isArray(usuariosRolResponse)
           ? usuariosRolResponse
@@ -232,43 +232,6 @@ export class DDireccionInicio implements OnInit {
     });
   }
 
-  /*instruir(registro: RegistroDocumento): void {
-    console.log('ID del registro a instruir:', registro.id);
-
-    this.flujoService.obtenerRolYUsuario(2).subscribe({
-      next: (usuariosRolResponse) => {
-        console.log('Usuarios por rol obtenidos:', usuariosRolResponse);
-        const listaUsuarios: any[] = Array.isArray(usuariosRolResponse)
-          ? usuariosRolResponse
-          : usuariosRolResponse?.datos || [];
-        const destinatariosIds: number[] = listaUsuarios.map((u: any) => u.id);
-        console.log('los destinatarios Ids son: ', destinatariosIds);
-        const payload = {
-          ordenId: registro.id,
-          usuarioRolId: this.usuario()?.id ?? 0,
-          destinatariosUsuarioRolIds: destinatariosIds,
-          observaciones: 'Se instruye la revisión a las jefaturas',
-        };
-        console.log('Payload a enviar:', payload);
-
-        this.flujoService.instruirYDerivar(payload).subscribe({
-          next: (res) => {
-            console.log('Instrucción enviada con éxito:', res);
-            this.cargarDatosTabla(); // Recargar la lista de la tabla
-          },
-          error: (err) => {
-            console.error('Error al instruir y derivar:', err);
-          },
-        });
-      },
-    });
-  }*/
-  /*eliminar(id: number): void {
-    console.log('Eliminar registro con ID:', id);
-
-    this.fuenteDatos = this.fuenteDatos.filter((item) => item.id !== id);
-  }*/
-
   // 1. Confirmación para Eliminar
   eliminar(id: number): void {
     Swal.fire({
@@ -288,70 +251,3 @@ export class DDireccionInicio implements OnInit {
     });
   }
 }
-
-/*import { Component, inject } from '@angular/core';
-import { Auth } from '../../core/services/auth';
-import { FlujoService, PayloadCrearBorrador } from '../../core/services/flujo.service';
-
-@Component({
-  selector: 'app-d-direccion-inicio',
-  templateUrl: './d-direccion-inicio.component.html',
-  styleUrls: ['./d-direccion-inicio.component.css']
-})
-export class DDireccionInicioComponent {
-  private authService = inject(Auth);
-  private flujoService = inject(FlujoService);
-
-  // Signal del usuario autenticado
-  usuario = this.authService.usuarioActual;
-
-  fuenteDatos: RegistroDocumento[] = [];
-  nombreArchivoSeleccionado: string = 'Ningún archivo seleccionado';
-  formularioRegistro: any; // Instancia de tu FormGroup
-
-  adicionarATabla(): void {
-    if (this.formularioRegistro.invalid) {
-      this.formularioRegistro.markAllAsTouched();
-      return;
-    }
-
-    const valoresFormulario = this.formularioRegistro.value;
-    const usuarioId = this.usuario()?.id;
-
-    console.log('Usuario ID detectado:', usuarioId);
-
-    // Mapeo de datos para la petición HTTP
-    const payload: PayloadCrearBorrador = {
-      usuarioId: usuarioId,
-      cite: valoresFormulario.cite,
-      nombreArchivo: this.nombreArchivoSeleccionado
-    };
-
-    // Llamada al servicio HTTP
-    this.flujoService.crearBorrador(payload).subscribe({
-      next: (response) => {
-        console.log('Respuesta de la API:', response);
-
-        // Se inserta en la tabla local tras confirmación del servidor
-        const nuevoRegistro: RegistroDocumento = {
-          id: response.datos?.id ?? (this.fuenteDatos.length + 1),
-          cite: valoresFormulario.cite,
-          nombreArchivo: this.nombreArchivoSeleccionado,
-          estado: '[D] BORRADOR',
-          actorActual: 'Dirección DNA',
-          subtextoActor: 'Pendiente de instruir',
-          fecha: new Date().toLocaleString('es-BO'),
-        };
-
-        this.fuenteDatos = [...this.fuenteDatos, nuevoRegistro];
-
-        // Reiniciar formulario
-        this.formularioRegistro.reset();
-        this.nombreArchivoSeleccionado = 'Ningún archivo seleccionado';
-      },
-      error: (error) => {
-        console.error('Error al registrar el borrador en la API:', error);
-      }
-    });
-  }
-}*/
