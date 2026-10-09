@@ -37,35 +37,57 @@ export interface RespuestaApi<T = any> {
   fechaCreacion: string;
   fechaActualizacion: string;
 }
+export interface OrdenInspeccionDto {
+  id: number;
+  especialidad: string;
+  codigoOrden: string;
+  nombre: string;
+  fechaAsignacion: string;
+}
 
+export interface ApiResponse<T> {
+  exito: boolean;
+  mensaje: string;
+  datos: T;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class FlujoOperaciones {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/operaciones/flujo/crear-borrador';
+  private apiUrl = 'http://192.168.25.17:8080/api/operaciones/flujo/crear-borrador';
 
   crearBorrador(crearBorrador: CrearBorrador): Observable<RespuestaApi> {
     return this.http.post<RespuestaApi>(this.apiUrl, crearBorrador);
   }
 
-  // En tu servicio FlujoOperaciones (flujo-operaciones.ts)
   obtenerOrdenesInspeccion(): Observable<any> {
-    return this.http.get<any>('http://localhost:8080/api/operaciones/flujo/ordenes-inspeccion');
+    return this.http.get<any>('http://192.168.25.17:8080/api/operaciones/flujo/ordenes-inspeccion');
+  }
+
+  obtenerOrdenesInspeccionJefe(
+    usuarioId: number,
+    rolId: number,
+  ): Observable<ApiResponse<OrdenInspeccionDto[]>> {
+    return this.http.get<ApiResponse<OrdenInspeccionDto[]>>(
+      `http://localhost:8080/api/operaciones/flujojefe/ordenes-inspeccion/${usuarioId}/${rolId}`,
+    );
   }
 
   //http://localhost:8080/api/operaciones/flujo/instruir-y-derivar
 
   instruirYDerivar(instruirYDerivar: InstruirYDerivar): Observable<any> {
     return this.http.post<any>(
-      'http://localhost:8080/api/operaciones/flujo/instruir-y-derivar',
+      'http://192.168.25.17:8080/api/operaciones/flujo/instruir-y-derivar',
       instruirYDerivar,
     );
   }
 
   obtenerRolYUsuario(rolId: number, especialidadId: number, areaId: number): Observable<any> {
     return this.http.get<any>(
-      `http://localhost:8080/api/v1/seguridad/usuarios/rol/${rolId}/especialidad/${especialidadId}/area/${areaId} `,
+      `http://192.168.25.17:8080/api/v1/seguridad/usuarios/rol/${rolId}/especialidad/${especialidadId}/area/${areaId} `,
     );
   }
+
+  private readonly baseUrl = 'http://localhost:8080/api/operaciones/flujojefe/ordenes-inspeccion';
 }

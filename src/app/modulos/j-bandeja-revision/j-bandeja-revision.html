@@ -1,1 +1,83 @@
-<p>j-bandeja-revision works!</p>
+<div class="container">
+  <!-- Encabezado de la Bandeja de Revisión -->
+  <div class="header">
+    <h1>Registro de Inspecciones Asignadas</h1>
+    <p class="subtitle">Gestión de órdenes de inspección - Estado Por Designar</p>
+  </div>
+
+  <!-- Formulario Reactivo de Búsqueda -->
+  <form [formGroup]="filtroForm" class="filter-form">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar por CITE o estado</mat-label>
+      <input matInput formControlName="busqueda" placeholder="Ej. ORD-2026-001" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </form>
+
+  <!-- Tabla Angular Material -->
+  <div class="table-container mat-elevation-z2">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- N° -->
+      <ng-container matColumnDef="numero">
+        <th mat-header-cell *matHeaderCellDef>N°</th>
+        <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+      </ng-container>
+
+      <!-- Especialidad -->
+      <ng-container matColumnDef="especialidad">
+        <th mat-header-cell *matHeaderCellDef>Especialidad</th>
+        <td mat-cell *matCellDef="let row">
+          <strong>{{ row.especialidad }}</strong>
+        </td>
+      </ng-container>
+
+      <!-- N° Memorandum / CITE -->
+      <ng-container matColumnDef="codigoOrden">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>N° Memorandum / CITE</th>
+        <td mat-cell *matCellDef="let row">{{ row.codigoOrden }}</td>
+      </ng-container>
+
+      <!-- Estado Operativo -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado Operativo</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="status-badge" [ngClass]="row.nombre.toLowerCase()">
+            {{ row.nombre }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Fecha Notificación -->
+      <ng-container matColumnDef="fechaAsignacion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Notificación</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.fechaAsignacion | date: 'dd/MM/yyyy' }}
+        </td>
+      </ng-container>
+
+      <!-- Acciones Disponibles -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones Disponibles</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-flat-button class="btn-action btn-designar" (click)="designarInspector(row)">
+            <mat-icon>settings</mat-icon>
+            Designar Insp.
+          </button>
+          <button mat-flat-button class="btn-action btn-asignar" (click)="asignar(row)">
+            Asignar
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <!-- Mensaje sin datos -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="6">No se encontraron órdenes registradas en la bandeja.</td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

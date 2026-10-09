@@ -1,0 +1,86 @@
+<div class="modal-container">
+  <!-- Cabecera -->
+  <div class="modal-header">
+    <div class="title-group">
+      <h2>
+        Asignar Indicadores de Lugar - CITE: <strong>{{ data.cite }}</strong>
+      </h2>
+      <span class="badge-configurable">CONFIGURABLE</span>
+    </div>
+    <button mat-icon-button class="btn-close" (click)="cerrar()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="modal-body">
+    @if (cargando) {
+      <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Cargando información del servidor...</p>
+      </div>
+    } @else if (errorMensaje) {
+      <div class="empty-state error">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ errorMensaje }}</p>
+        <button mat-button color="primary" (click)="cargarDatos()">Reintentar</button>
+      </div>
+    } @else if (inspectores.length === 0) {
+      <div class="empty-state">
+        <mat-icon>info</mat-icon>
+        <p>No se encontraron inspectores disponibles.</p>
+      </div>
+    } @else {
+      <!-- Tabla de Inspectores -->
+      <div class="table-container">
+        <div class="table-header">
+          <div class="col-inspector">INSPECTOR ASIGNADO</div>
+          <div class="col-indicador">INDICADOR DEL LUGAR</div>
+        </div>
+
+        @for (inspector of inspectores; track inspector.id) {
+          <div class="table-row">
+            <div class="col-inspector">
+              <strong>{{ inspector.especialidad }}</strong> - {{ inspector.nombreCompleto }}
+            </div>
+            <div class="col-indicador">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-select
+                  [(ngModel)]="inspector.indicadoresSeleccionados"
+                  placeholder="Seleccionar Indicadores..."
+                  multiple
+                >
+                  @for (opcion of opcionesIndicadores; track opcion.id) {
+                    <mat-option [value]="opcion.id">{{ opcion.nombreAerodromo }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        }
+      </div>
+
+      <p class="foot-note">* Haga clic en 'Indicador del Lugar' para desplegar la lista.</p>
+    }
+  </mat-dialog-content>
+
+  <!-- Botones de Acción -->
+  <mat-dialog-actions align="end" class="modal-actions">
+    <button mat-flat-button class="btn-salir" (click)="cerrar()">Salir</button>
+    <button
+      mat-flat-button
+      class="btn-guardar"
+      [disabled]="cargando || inspectores.length === 0"
+      (click)="guardarConfiguracion()"
+    >
+      Guardar Configuración
+    </button>
+    <button
+      mat-flat-button
+      class="btn-notificar"
+      [disabled]="cargando || inspectores.length === 0"
+      (click)="notificarEIniciar()"
+    >
+      🚀 Notificar e Iniciar Inspección
+    </button>
+  </mat-dialog-actions>
+</div>
