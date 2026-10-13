@@ -117,3 +117,21 @@
     }
   }
 }
+.col-indicador-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.col-indicador-container mat-form-field {
+  flex: 1;
+  margin-bottom: -1.25em;
+}
+
+.btn-select-all {
+  height: 40px;
+  font-size: 0.75rem;
+  padding: 0 12px;
+  white-space: nowrap;
+}

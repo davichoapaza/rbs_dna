@@ -24,42 +24,63 @@
         <p>{{ errorMensaje }}</p>
         <button mat-button color="primary" (click)="cargarDatos()">Reintentar</button>
       </div>
-    } @else if (inspectores.length === 0) {
+    } @else if (inspectoresArray.controls.length === 0) {
       <div class="empty-state">
         <mat-icon>info</mat-icon>
         <p>No se encontraron inspectores disponibles.</p>
       </div>
     } @else {
-      <!-- Tabla de Inspectores -->
-      <div class="table-container">
-        <div class="table-header">
-          <div class="col-inspector">INSPECTOR ASIGNADO</div>
-          <div class="col-indicador">INDICADOR DEL LUGAR</div>
-        </div>
-
-        @for (inspector of inspectores; track inspector.id) {
-          <div class="table-row">
-            <div class="col-inspector">
-              <strong>{{ inspector.especialidad }}</strong> - {{ inspector.nombreCompleto }}
-            </div>
-            <div class="col-indicador">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-select
-                  [(ngModel)]="inspector.indicadoresSeleccionados"
-                  placeholder="Seleccionar Indicadores..."
-                  multiple
-                >
-                  @for (opcion of opcionesIndicadores; track opcion.id) {
-                    <mat-option [value]="opcion.id">{{ opcion.nombreAerodromo }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-            </div>
+      <!-- Tabla de Inspectores con Formularios Reactivos -->
+      <form [formGroup]="form">
+        <div class="table-container" formArrayName="inspectores">
+          <div class="table-header">
+            <div class="col-inspector">INSPECTOR ASIGNADO</div>
+            <div class="col-indicador">INDICADOR DEL LUGAR (AERÓDROMOS)</div>
           </div>
-        }
-      </div>
 
-      <p class="foot-note">* Haga clic en 'Indicador del Lugar' para desplegar la lista.</p>
+          @for (inspectorCtrl of inspectoresArray.controls; track $index; let i = $index) {
+            <div class="table-row" [formGroupName]="i">
+              <div class="col-inspector">
+                <strong>{{ inspectorCtrl.get('especialidad')?.value }}</strong> -
+                {{ inspectorCtrl.get('nombreCompleto')?.value }}
+              </div>
+              <div class="col-indicador-container">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-select
+                    formControlName="indicadoresSeleccionados"
+                    placeholder="Seleccionar Indicadores..."
+                    multiple
+                  >
+                    @for (opcion of getOpcionesDisponibles(i); track opcion.id) {
+                      <mat-option [value]="opcion.id">
+                        {{ opcion.codigoOaci }} - {{ opcion.ciudad }} ({{ opcion.nombreAerodromo }})
+                      </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                <button
+                  mat-stroked-button
+                  [color]="isTodosSeleccionados(i) ? 'warn' : 'primary'"
+                  type="button"
+                  class="btn-select-all"
+                  (click)="seleccionarTodos(i)"
+                  [title]="
+                    isTodosSeleccionados(i)
+                      ? 'Deseleccionar todos'
+                      : 'Seleccionar todos los disponibles'
+                  "
+                >
+                  {{ isTodosSeleccionados(i) ? 'Limpiar' : 'Todos' }}
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </form>
+
+      <p class="foot-note">
+        * Un indicador de lugar seleccionado por un inspector no estará disponible para los demás.
+      </p>
     }
   </mat-dialog-content>
 
@@ -69,7 +90,7 @@
     <button
       mat-flat-button
       class="btn-guardar"
-      [disabled]="cargando || inspectores.length === 0"
+      [disabled]="cargando || inspectoresArray.controls.length === 0"
       (click)="guardarConfiguracion()"
     >
       Guardar Configuración
@@ -77,10 +98,10 @@
     <button
       mat-flat-button
       class="btn-notificar"
-      [disabled]="cargando || inspectores.length === 0"
+      [disabled]="cargando || inspectoresArray.controls.length === 0"
       (click)="notificarEIniciar()"
     >
-      🚀 Notificar e Iniciar Inspección
+      Notificar e Iniciar Inspección
     </button>
   </mat-dialog-actions>
 </div>
