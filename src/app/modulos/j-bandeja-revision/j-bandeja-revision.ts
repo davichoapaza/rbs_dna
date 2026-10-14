@@ -83,6 +83,10 @@ export class JBandejaRevision implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  constructor(
+    private inspectorService: FlujoOperaciones, // <-- Inyección del servicio
+  ) {}
+
   ngOnInit(): void {
     this.initForm();
     this.cargarOrdenes();
@@ -106,7 +110,7 @@ export class JBandejaRevision implements OnInit {
         if (res.exito && res.datos) {
           this.dataSource.data = res.datos;
           console.log('Datos de la bandeja de revisión:', res.datos);
-
+          console.log('David Apaza CANAZA bandeja de revisión:', this.dataSource.data);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }
@@ -134,16 +138,18 @@ export class JBandejaRevision implements OnInit {
       disableClose: true,
       data: {
         // Solo le pasas los datos del ítem seleccionado que el modal necesita mostrar en el título
+
         cite: item?.memorandumCITE || item?.numeroMemorandum || 'DGAC-DNA-001/2026',
         especialidadDefecto: `INSP. ${item?.especialidad || 'AGA'}`,
       },
     });
 
-    dialogRef.afterClosed().subscribe((resultado) => {
-      if (resultado) {
-        console.log('Acción ejecutada:', resultado.accion); // 'guardar' o 'notificar_iniciar'
-        console.log('Inspectores configurados:', resultado.inspectores);
-        /*
+    //  dialogRef.afterClosed().subscribe((resultado) => {
+    //   if (resultado) {
+    //      console.log('Acción ejecutada:', resultado.accion); // 'guardar' o 'notificar_iniciar'
+    //      console.log('Inspectores configurados asignaciones=:', resultado.inspectores);
+    //      console.log('Item seleccionado para designar inspector  jefaturaId:', item.id);
+    /*
         if (resultado.accion === 'guardar') {
           // Aquí llamas a tu servicio para guardar la configuración
           this.guardarDesignacion(resultado.inspectores);
@@ -151,6 +157,42 @@ export class JBandejaRevision implements OnInit {
           // Aquí llamas a tu servicio para notificar e iniciar inspección
           this.notificarEIniciarInspeccion(resultado.inspectores);
         }*/
+    //   }
+    // });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        console.log('Acción ejecutada:', resultado.accion); // 'guardar' o 'notificar_iniciar'
+        console.log('Inspectores configurados asignaciones=:', resultado.inspectores);
+        console.log('Item seleccionado para designar inspector jefaturaId:', item.id);
+
+        // Construcción dinámica del payload basado en los datos del diálogo
+        const payload = {
+          jefaturaId: item.id, // Viene del objeto 'item' (ej. 129)
+          estadoId: 1, // ID de estado inicial por defecto (ej. 1)
+          asignaciones: resultado.inspectores.map((insp: any) => ({
+            inspectorUsuarioRolId: insp.id, // El 'id' del inspector en la interfaz
+            indicadoresSeleccionados: insp.indicadoresSeleccionados || [], // Array de IDs de aeródromos
+          })),
+        };
+
+        console.log('JSON generado para enviar al backend:', JSON.stringify(payload, null, 2));
+
+        // 2. Ejecutar según la acción seleccionada
+        if (resultado.accion === 'guardar') {
+          this.inspectorService.guardarAsignaciones(payload).subscribe({
+            next: (response) => {
+              console.log('Guardado exitosamente:', response);
+              // Aquí puedes mostrar un mensaje de éxito (ej. usando MatSnackBar) y refrescar tu tabla
+            },
+            error: (error) => {
+              console.error('Error al guardar la asignación:', error);
+              // Aquí puedes manejar el mensaje de error visual para el usuario
+            },
+          });
+        } else if (resultado.accion === 'notificar_iniciar') {
+          // Si requieres otra lógica o endpoint para notificar e iniciar
+        }
       }
     });
   }

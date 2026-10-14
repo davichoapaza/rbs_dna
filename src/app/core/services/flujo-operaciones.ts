@@ -90,4 +90,13 @@ export class FlujoOperaciones {
   }
 
   private readonly baseUrl = 'http://localhost:8080/api/operaciones/flujojefe/ordenes-inspeccion';
+
+  // URL del endpoint POST en tu backend
+  private apiUrlI = 'http://localhost:8080/api/v1/inspector-indicadores/guardar';
+
+  //constructor(private http: HttpClient) { }
+
+  guardarAsignaciones(payload: any): Observable<any> {
+    return this.http.post<any>(this.apiUrlI, payload);
+  }
 }
