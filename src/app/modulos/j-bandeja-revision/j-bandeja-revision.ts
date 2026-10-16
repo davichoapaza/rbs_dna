@@ -139,7 +139,7 @@ export class JBandejaRevision implements OnInit {
       data: {
         // Solo le pasas los datos del ítem seleccionado que el modal necesita mostrar en el título
 
-        cite: item?.memorandumCITE || item?.numeroMemorandum || 'DGAC-DNA-001/2026',
+        cite: item?.memorandumCITE || item?.codigoOrden || 'DGAC-DNA-001/2026',
         especialidadDefecto: `INSP. ${item?.especialidad || 'AGA'}`,
       },
     });
@@ -165,6 +165,7 @@ export class JBandejaRevision implements OnInit {
         console.log('Acción ejecutada:', resultado.accion); // 'guardar' o 'notificar_iniciar'
         console.log('Inspectores configurados asignaciones=:', resultado.inspectores);
         console.log('Item seleccionado para designar inspector jefaturaId:', item.id);
+        console.log('Item seleccionado para designar inspector jefaturaId:', item);
 
         // Construcción dinámica del payload basado en los datos del diálogo
         const payload = {
