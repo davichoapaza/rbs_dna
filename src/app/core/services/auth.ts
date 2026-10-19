@@ -77,7 +77,8 @@ export class Auth {
           usuarioBackend.rol = usuarioBackend.roles?.map((r: any) => r.codigo.toLowerCase());
           sessionStorage.setItem(this.token, usuarioBackend.token);
           sessionStorage.setItem(this.usuario, JSON.stringify(usuarioBackend));
-          console.log();
+          console.log(':*response DAVID *:', response);
+          console.log(':*usuario response DAVID *:', JSON.stringify(usuarioBackend));
           this.autenticado.set(true);
           this.usuarioActual.set(usuarioBackend);
         } else {

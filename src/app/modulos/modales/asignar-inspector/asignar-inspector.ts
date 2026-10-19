@@ -97,9 +97,24 @@ export class ModalAsignarInspectorComponent implements OnInit {
     this.cargando = true;
     this.errorMensaje = null;
 
-    const urlUsuarios =
-      'http://localhost:8080/api/v1/seguridad/usuarios/rol/3/especialidad/0/area/2';
+    //const urlUsuarios =
+    // 'http://localhost:8080/api/v1/seguridad/usuarios/rol/3/especialidad/0/area/2';
+    //const urlIndicadores = 'http://localhost:8080/api/indicadores-lugar';
+    //const usuarioStr = sessionStorage.getItem('usuario');
+    //
+    const usuarioStr = sessionStorage.getItem('user');
+    const usuarioActual = usuarioStr ? JSON.parse(usuarioStr) : null;
+    const idUnidad = usuarioActual?.idUnidad; //|| usuarioActual?.idUnidad || 2;
+
+    const urlUsuarios = `http://localhost:8080/api/v1/seguridad/usuarios/rol/3/especialidad/0/area/2/unidad/${idUnidad}`;
+    //const urlIndicadores = 'http://localhost:8080/api/v1/indicadores-lugar';
     const urlIndicadores = 'http://localhost:8080/api/indicadores-lugar';
+
+    //console.log('usuarioStr adolfo:', usuarioStr);
+
+    console.log('usuarioStr usuarioActual:', usuarioStr);
+
+    console.log('usuarioStr idUnidad:', idUnidad);
 
     forkJoin({
       resUsuarios: this.http.get<ApiResponseUsuarios>(urlUsuarios).pipe(
