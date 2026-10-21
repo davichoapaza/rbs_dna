@@ -204,7 +204,7 @@ export class DDireccionInicio implements OnInit {
   }
 
   private ejecutarFlujoInstruir(registro: RegistroDocumento, observaciones: string): void {
-    this.flujoService.obtenerRolYUsuario(2, 0, 2).subscribe({
+    this.flujoService.obtenerRolYUsuario(2, 0, 2, 0).subscribe({
       next: (usuariosRolResponse) => {
         const listaUsuarios = Array.isArray(usuariosRolResponse)
           ? usuariosRolResponse

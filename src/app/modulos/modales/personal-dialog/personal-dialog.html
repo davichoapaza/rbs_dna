@@ -1,0 +1,62 @@
+<p>personal-dialog works!</p>
+<h2 mat-dialog-title>
+  {{ isEdit ? 'Modificar Datos de Persona' : 'Registrar Nueva Persona' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formPersona" class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombres</mat-label>
+      <input matInput formControlName="nombres" placeholder="Ej. Juan Carlos" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Primer Apellido</mat-label>
+      <input matInput formControlName="primer_apellido" placeholder="Ej. Pérez" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cédula de Identidad (CI)</mat-label>
+      <input matInput formControlName="ci" placeholder="Ej. 4859210" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" placeholder="jperez" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Unidad (param_unidades)</mat-label>
+      <mat-select formControlName="unidadId" required>
+        @for (u of unidades; track u.id) {
+          <mat-option [value]="u.id">{{ u.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Especialidad (param_especialidades)</mat-label>
+      <mat-select formControlName="especialidadId" required>
+        @for (e of especialidades; track e.id) {
+          <mat-option [value]="e.id">{{ e.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Rol en el Sistema (roles)</mat-label>
+      <mat-select formControlName="rolId" required>
+        @for (r of roles; track r.id) {
+          <mat-option [value]="r.id">{{ r.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cerrar()">Cancelar</button>
+  <button mat-flat-button color="primary" [disabled]="formPersona.invalid" (click)="guardar()">
+    Guardar Registro
+  </button>
+</mat-dialog-actions>

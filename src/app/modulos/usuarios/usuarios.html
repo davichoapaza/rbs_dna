@@ -1,1 +1,71 @@
-<p>usuarios works!</p>
+<div class="container-card">
+  <div class="header-flex">
+    <div class="title-area">
+      <mat-icon>badge</mat-icon>
+      <h1>Gestión de Personal, Unidades y Roles</h1>
+    </div>
+    <button mat-flat-button color="primary" (click)="abrirModal()">
+      <mat-icon>person_add</mat-icon> Registrar Nueva Persona
+    </button>
+  </div>
+
+  <div class="filters-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Buscar por Nombre, Apellido o CI...</mat-label>
+      <input matInput [(ngModel)]="filtroTexto" placeholder="Ej. Juan Pérez" />
+    </mat-form-field>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Persona / CI</th>
+        <th>Unidad Asignada</th>
+        <th>Especialidad</th>
+        <th>Rol Actual</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of listaPersonal; track p.id) {
+        <tr>
+          <td>
+            <strong>{{ p.nombres }} {{ p.primer_apellido }}</strong
+            ><br />
+            <small style="color: #6b7280">CI: {{ p.ci }} | @{{ p.username }}</small>
+          </td>
+          <td>{{ p.unidad_nombre }}</td>
+          <td>{{ p.especialidad_nombre }}</td>
+          <td>
+            <span class="badge-rol">{{ p.rol_nombre }}</span>
+          </td>
+          <td>
+            <span class="badge" [class.active]="!p.bloqueado" [class.inactive]="p.bloqueado">
+              {{ p.bloqueado ? 'Inactivo' : 'Activo' }}
+            </span>
+          </td>
+          <td>
+            <div class="actions-cell">
+              <button mat-icon-button (click)="abrirModal(p)" matTooltip="Editar Datos">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="abrirModal(p)" matTooltip="Cambiar Rol o Unidad">
+                <mat-icon>swap_horiz</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="toggleEstado(p)"
+                [matTooltip]="p.bloqueado ? 'Activar' : 'Inactivar'"
+              >
+                <mat-icon>{{ p.bloqueado ? 'check_circle' : 'block' }}</mat-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

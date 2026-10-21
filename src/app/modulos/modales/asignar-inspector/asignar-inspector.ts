@@ -1,14 +1,3 @@
-/*import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-asignar-inspector',
-  imports: [],
-  templateUrl: './asignar-inspector.html',
-  styleUrl: './asignar-inspector.css',
-})
-export class AsignarInspector {}
-*/
-
 import { Component, Inject, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
@@ -110,8 +99,6 @@ export class ModalAsignarInspectorComponent implements OnInit {
     //const urlIndicadores = 'http://localhost:8080/api/v1/indicadores-lugar';
     const urlIndicadores = 'http://localhost:8080/api/indicadores-lugar';
 
-    //console.log('usuarioStr adolfo:', usuarioStr);
-
     console.log('usuarioStr usuarioActual:', usuarioStr);
 
     console.log('usuarioStr idUnidad:', idUnidad);
@@ -136,10 +123,15 @@ export class ModalAsignarInspectorComponent implements OnInit {
           ? resIndicadores
           : resIndicadores?.datos || [];
 
+        console.log(
+          'Indicadores de lugar obtenidos (resIndicadores):',
+          resUsuarios,
+          resIndicadores,
+        );
         this.opcionesIndicadores = listaIndicadores.filter(
           (ind: any) => ind.activo === 'AC' || !ind.activo,
         );
-
+        console.log('datos del modal:', this.data);
         // 2. Construir FormArray de Inspectores
         const especialidad = this.data.especialidadDefecto || 'INSP. AGA';
 
@@ -152,6 +144,8 @@ export class ModalAsignarInspectorComponent implements OnInit {
               id: [usr.id],
               nombreCompleto: [nombreCompleto],
               especialidad: [especialidad],
+              unidad: [usr.codigo || ''],
+              area: [usr.nombre || ''],
               indicadoresSeleccionados: [[]],
             });
           });

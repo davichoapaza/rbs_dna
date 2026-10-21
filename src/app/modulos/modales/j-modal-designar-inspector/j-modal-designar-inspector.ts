@@ -77,6 +77,7 @@ export class JModalDesignarInspector implements OnInit {
 
   inicializarFormulario(): void {
     const previas = this.datos?.asignacionesPrevias || [];
+    console.log('Asignaciones previas recibidas ****:', previas);
 
     this.listaInspectores.forEach((inspector) => {
       // Buscar si este inspector ya tenía datos guardados

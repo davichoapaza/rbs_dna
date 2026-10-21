@@ -64,10 +64,6 @@
 }
 
 
-
-
-
-
 /* Cambia el color del texto de los enlaces del menú a blanco */
 .app-sidenav [matListItemTitle] {
   color: #ded7d7 !important;
@@ -98,9 +94,9 @@
 .avatar-badge {
   width: 40px;
   height: 40px;
-  background-color: #4a4a4a; /* Color gris oscuro de fondo */
-  color: #ffffff;            /* Texto blanco */
-  border-radius: 50%;        /* Hace el contenedor perfectamente redondo */
+  background-color: #4a4a4a; 
+  color: #ffffff;           
+  border-radius: 50%;       
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,6 +131,25 @@
 }
 .icon-logout {
   color: #e94a6f !important;
+}
+
+/* Hace que el sidenav actúe como contenedor flexible */
+.app-sidenav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Contenedor interno que abarca todo el alto */
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* La parte superior crece para ocupar el espacio libre y permite scroll si el menú es muy largo */
+.sidenav-content-top {
+  flex: 1;
+  overflow-y: auto;
 }
 
 

@@ -1,32 +1,17 @@
 <mat-sidenav-container class="contenedor">
-  <mat-sidenav #sidenav mode="side" class="app-sidenav" opened>
+  <!-- <mat-sidenav #sidenav mode="side" class="app-sidenav" opened>
     <div class="titulo-contenedor">
       <span class="titulo">RBS-DNA <BR /> SISTEMA DE VIGILANCIA BASADA EN RIESGOS</span>
     </div>
 
     <!-- INFORMACIÓN DEL ROL  -->
-    <div class="rol-info">
+  <!-- <div class="rol-info">
       <div class="rol-badge" [style.background]="obtenerColor()">
         <span
           ><b>ROL : {{ usuarioRol }}</b></span
         >
       </div>
     </div>
-    <!-- Lista de menú -->
-    <!--<mat-nav-list class="menu-lista">
-      @for (item of menuItems; track item.path) {
-        <a
-          mat-list-item
-          [routerLink]="item.path"
-          routerLinkActive="active-link"
-          style="color: white !important"
-        >
-          <mat-icon matListItemIcon style="color: white !important">{{ item.icon }}</mat-icon>
-          <span matListItemTitle style="color: white !important">{{ item.label }}</span>
-        </a>
-      }
-    </mat-nav-list>
-  -->
 
     <mat-nav-list>
       @for (item of menuItems; track item.path) {
@@ -36,8 +21,50 @@
         </a>
       }
     </mat-nav-list>
-  </mat-sidenav>
+  </mat-sidenav>-->
 
+  <mat-sidenav #sidenav mode="side" class="app-sidenav" opened>
+    <div class="sidenav-container">
+      <!-- CONTENIDO SUPERIOR (Título, Rol y Menú) -->
+      <div class="sidenav-content-top">
+        <div class="titulo-contenedor">
+          <span class="titulo">RBS-DNA <BR /> SISTEMA DE VIGILANCIA BASADA EN RIESGOS</span>
+        </div>
+
+        <!-- INFORMACIÓN DEL ROL -->
+        <div class="rol-info">
+          <div class="rol-badge" [style.background]="obtenerColor()">
+            <span
+              ><b>ROL : {{ usuarioRol }}</b></span
+            >
+          </div>
+        </div>
+
+        <mat-nav-list>
+          @for (item of menuItems; track item.path) {
+            <a mat-list-item [routerLink]="item.path" routerLinkActive="active">
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.label }}</span>
+            </a>
+          }
+        </mat-nav-list>
+      </div>
+
+      <!-- (Cerrar Sesión  -->
+      <div class="sidenav-footer">
+        <mat-nav-list>
+          <!-- <a mat-list-item (click)="logout()" class="logout-item">
+            <span matListItemTitle>Cerrar Sesión</span>
+            <mat-icon matListItemIcon>logout</mat-icon>
+          </a> -->
+          <a mat-list-item (click)="logout()" style="color: #d32f2f !important">
+            <span matListItemTitle style="color: #d32f2f !important">Cerrar Sesión</span>
+            <mat-icon matListItemIcon style="color: #d32f2f !important">logout</mat-icon>
+          </a>
+        </mat-nav-list>
+      </div>
+    </div>
+  </mat-sidenav>
   <!-- Sección del Contenido Principal -->
   <mat-sidenav-content class="app-content">
     <!-- Barra superior con botón para ocultar/mostrar el menú -->

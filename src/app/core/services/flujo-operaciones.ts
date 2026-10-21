@@ -83,9 +83,14 @@ export class FlujoOperaciones {
     );
   }
 
-  obtenerRolYUsuario(rolId: number, especialidadId: number, areaId: number): Observable<any> {
+  obtenerRolYUsuario(
+    rolId: number,
+    especialidadId: number,
+    areaId: number,
+    unidadId: number,
+  ): Observable<any> {
     return this.http.get<any>(
-      `http://192.168.25.17:8080/api/v1/seguridad/usuarios/rol/${rolId}/especialidad/${especialidadId}/area/${areaId} `,
+      `http://192.168.25.17:8080/api/v1/seguridad/usuarios/rol/${rolId}/especialidad/${especialidadId}/area/${areaId}/unidad/${unidadId}`,
     );
   }
 

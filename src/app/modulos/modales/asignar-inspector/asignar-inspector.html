@@ -29,7 +29,6 @@
         <p>No se encontraron inspectores disponibles.</p>
       </div>
     } @else {
-      <!-- Tabla de Inspectores con Formularios Reactivos -->
       <form [formGroup]="form">
         <div class="table-container" formArrayName="inspectores">
           <div class="table-header">
@@ -40,7 +39,8 @@
           @for (inspectorCtrl of inspectoresArray.controls; track $index; let i = $index) {
             <div class="table-row" [formGroupName]="i">
               <div class="col-inspector">
-                <strong>{{ inspectorCtrl.get('especialidad')?.value }}</strong> -
+                <strong>{{ inspectorCtrl.get('unidad')?.value }}</strong> -
+                <strong>{{ inspectorCtrl.get('area')?.value }}</strong> -
                 {{ inspectorCtrl.get('nombreCompleto')?.value }}
               </div>
               <div class="col-indicador-container">
