@@ -16,6 +16,11 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
+      <mat-label>Segundo Apellido</mat-label>
+      <input matInput formControlName="segundo_apellido" placeholder="Ej. Gómez" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
       <mat-label>Cédula de Identidad (CI)</mat-label>
       <input matInput formControlName="ci" placeholder="Ej. 4859210" required />
     </mat-form-field>
@@ -25,6 +30,7 @@
       <input matInput formControlName="username" placeholder="jperez" required />
     </mat-form-field>
 
+    <!-- Selección de Unidad -->
     <mat-form-field appearance="outline">
       <mat-label>Unidad (param_unidades)</mat-label>
       <mat-select formControlName="unidadId" required>
@@ -34,15 +40,21 @@
       </mat-select>
     </mat-form-field>
 
+    <!-- Selección de Especialidad (Cascada) -->
     <mat-form-field appearance="outline">
       <mat-label>Especialidad (param_especialidades)</mat-label>
-      <mat-select formControlName="especialidadId" required>
+      <mat-select
+        formControlName="especialidadId"
+        required
+        [disabled]="!formPersona.get('unidadId')?.value"
+      >
         @for (e of especialidades; track e.id) {
           <mat-option [value]="e.id">{{ e.nombre }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
+    <!-- Selección de Rol -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Rol en el Sistema (roles)</mat-label>
       <mat-select formControlName="rolId" required>

@@ -32,17 +32,18 @@
       @for (p of listaPersonal; track p.id) {
         <tr>
           <td>
-            <strong>{{ p.nombres }} {{ p.primer_apellido }}</strong
+            <strong>{{ p.nombres }} {{ p.primerApellido }} {{ p.segundoApellido }}</strong
             ><br />
             <small style="color: #6b7280">CI: {{ p.ci }} | @{{ p.username }}</small>
           </td>
-          <td>{{ p.unidad_nombre }}</td>
-          <td>{{ p.especialidad_nombre }}</td>
+          <td>{{ p.direccionCodigo }}</td>
+          <td>{{ p.especialidadNombre }}</td>
           <td>
             <span class="badge-rol">{{ p.rol_nombre }}</span>
           </td>
+
           <td>
-            <span class="badge" [class.active]="!p.bloqueado" [class.inactive]="p.bloqueado">
+            <span [style.color]="p.bloqueado ? '#dc2626' : '#16a34a'" style="font-weight: bold">
               {{ p.bloqueado ? 'Inactivo' : 'Activo' }}
             </span>
           </td>

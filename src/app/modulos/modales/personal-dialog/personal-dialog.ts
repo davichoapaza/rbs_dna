@@ -8,7 +8,7 @@
 export class PersonalDialog {}
 */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
@@ -38,6 +38,7 @@ export class PersonalDialog implements OnInit {
   private dialogRef = inject(MatDialogRef<PersonalDialog>);
   public data = inject(MAT_DIALOG_DATA);
   private usuariosService = inject(UsuariosService);
+  private cdRef = inject(ChangeDetectorRef);
 
   formPersona!: FormGroup;
   isEdit = false;
@@ -49,27 +50,83 @@ export class PersonalDialog implements OnInit {
   ngOnInit(): void {
     this.isEdit = !!this.data?.persona;
     this.initForm();
-    this.cargarCatalogos();
+    this.cargarCatalogosIniciales();
+
+    // Escuchar cambios interactivos en el selector de unidad
+    this.formPersona.get('unidadId')?.valueChanges.subscribe((unidadId) => {
+      if (unidadId) {
+        this.cargarEspecialidadesPorUnidad(Number(unidadId), false);
+      } else {
+        this.especialidades = [];
+        this.formPersona.get('especialidadId')?.setValue('');
+      }
+    });
   }
 
   initForm(): void {
     const p = this.data?.persona || {};
+
+    // Mapeo flexible para soportar atributos directos u objetos anidados del backend
+    const unidadIdVal = p.unidadId || p.unidad_id || p.paramUnidad?.id || '';
+    const especialidadIdVal =
+      p.especialidadId || p.especialidad_id || p.paramEspecialidad?.id || '';
+    const rolIdVal = p.rolId || p.rol_id || p.rol?.id || '';
+
     this.formPersona = this.fb.group({
       nombres: [p.nombres || '', Validators.required],
-      primer_apellido: [p.primer_apellido || '', Validators.required],
-      segundo_apellido: [p.segundo_apellido || ''],
+      primer_apellido: [p.primerApellido || p.primer_apellido || '', Validators.required],
+      segundo_apellido: [p.segundoApellido || p.segundo_apellido || ''],
       ci: [p.ci || '', Validators.required],
       username: [p.username || '', Validators.required],
-      unidadId: [p.unidadId || '', Validators.required],
-      especialidadId: [p.especialidadId || '', Validators.required],
-      rolId: [p.rolId || '', Validators.required],
+      unidadId: [unidadIdVal, Validators.required],
+      especialidadId: [especialidadIdVal, Validators.required],
+      rolId: [rolIdVal, Validators.required],
     });
   }
 
-  cargarCatalogos(): void {
-    this.usuariosService.obtenerUnidades().subscribe((res) => (this.unidades = res));
-    this.usuariosService.obtenerEspecialidades().subscribe((res) => (this.especialidades = res));
-    this.usuariosService.obtenerRoles().subscribe((res) => (this.roles = res));
+  cargarCatalogosIniciales(): void {
+    // 1. Cargar Unidades y luego verificar si es edición para precargar especialidades
+    this.usuariosService.obtenerUnidades().subscribe({
+      next: (res) => {
+        this.unidades = res;
+        this.cdRef.detectChanges();
+
+        const unidadIdActual = this.formPersona.get('unidadId')?.value;
+        if (unidadIdActual) {
+          this.cargarEspecialidadesPorUnidad(Number(unidadIdActual), true);
+        }
+      },
+      error: (err) => console.error('Error al obtener unidades:', err),
+    });
+
+    // 2. Cargar Roles
+    this.usuariosService.obtenerRoles().subscribe({
+      next: (res) => {
+        this.roles = res;
+        this.cdRef.detectChanges();
+      },
+      error: (err) => console.error('Error al obtener roles:', err),
+    });
+
+    console.log('Roles cargados:', this.roles);
+  }
+
+  cargarEspecialidadesPorUnidad(unidadId: number, mantenerEspecialidad: boolean): void {
+    this.usuariosService.obtenerEspecialidadesPorUnidad(unidadId).subscribe({
+      next: (res) => {
+        this.especialidades = res;
+
+        //Si el usuario cambia manualmente la unidad, limpiamos el control de especialidad
+        console.log('Especialidades cargadas para unidadId', unidadId, ':', this.especialidades);
+        if (!mantenerEspecialidad) {
+          this.formPersona.get('especialidadId')?.setValue('');
+        }
+
+        // Forzar actualización de renderizado en Angular Material
+        this.cdRef.detectChanges();
+      },
+      error: (err) => console.error('Error al cargar especialidades por unidad:', err),
+    });
   }
 
   guardar(): void {

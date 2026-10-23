@@ -16,15 +16,20 @@ export class UsuariosService {
   private apiUrl = 'http://192.168.25.17:8080/api/v1/seguridad';
 
   obtenerPersonal(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/personas`);
+    return this.http.get<any[]>(`${this.apiUrl}/personal/detalle`);
   }
 
   obtenerUnidades(): Observable<any[]> {
+    console.log('Obteniendo unidades desde el servicio...');
     return this.http.get<any[]>(`${this.apiUrl}/unidades`);
   }
 
-  obtenerEspecialidades(): Observable<any[]> {
+  /* obtenerEspecialidades(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/especialidades`);
+  }
+*/
+  obtenerEspecialidadesPorUnidad(unidadId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/especialidades/unidad/${unidadId}`);
   }
 
   obtenerRoles(): Observable<any[]> {
